@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>银翼杀手2049 - 影视详情 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+        
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* 主体内容区 */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #00ffaa;
+        }
+        
+        /* 电影详情容器 */
+        .movie-detail-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        /* 电影海报区域 */
+        .movie-poster-section {
+            position: relative;
+        }
+        
+        .movie-poster {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.3);
+        }
+        
+        .movie-rating {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #00ffaa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        /* 电影信息区域 */
+        .movie-info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .movie-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .movie-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .meta-label {
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .meta-value {
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .movie-genres {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .genre-tag {
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+        
+        .movie-synopsis {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+        
+        .synopsis-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ffaa;
+            margin-bottom: 10px;
+        }
+        
+        /* 内容模块 */
+        .content-section {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ffaa;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: rgba(0, 255, 170, 0.3);
+        }
+        
+        /* 视频图片模块 */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .media-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .media-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .media-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .media-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 10px;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        /* 讨论区模块 */
+        .discussion-section {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+        }
+        
+        .comment-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .comment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ffaa;
+            font-weight: bold;
+        }
+        
+        .comment-input-area {
+            flex: 1;
+        }
+        
+        .comment-input {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 170, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            color: #fff;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .comment-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .comment-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .cancel-btn {
+            background-color: transparent;
+            color: #aaa;
+            border: 1px solid #aaa;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .comment-item {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .comment-time {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .comment-text {
+            line-height: 1.5;
+        }
+        
+        .comment-reactions {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .reaction-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .reaction-btn:hover {
+            color: #00ffaa;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+        </div>
+    </nav>
+    
+    <!-- 主体内容区 -->
+    <div class="main-content">
+        <a href="template2.html" class="back-btn">← 返回列表</a>
+        
+        <h1 class="page-title">银翼杀手2049</h1>
+        
+        <!-- 电影详情容器 -->
+        <div class="movie-detail-container">
+            <!-- 电影海报区域 -->
+            <div class="movie-poster-section">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Blade%20Runner%202049%2C%20sci-fi%2C%20futuristic%20city%2C%20dark%20atmosphere&image_size=portrait_4_3" alt="银翼杀手2049" class="movie-poster">
+                <div class="movie-rating">8.7</div>
+            </div>
+            
+            <!-- 电影信息区域 -->
+            <div class="movie-info-section">
+                <h2 class="movie-title">银翼杀手2049</h2>
+                
+                <div class="movie-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">年份：</span>
+                        <span class="meta-value">2017</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">导演：</span>
+                        <span class="meta-value">丹尼斯·维伦纽瓦</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">编剧：</span>
+                        <span class="meta-value">汉普顿·范彻、迈克尔·格林、菲利普·K·迪克</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">主演：</span>
+                        <span class="meta-value">瑞恩·高斯林、哈里森·福特、安娜·德·阿玛斯</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">国家/地区：</span>
+                        <span class="meta-value">美国</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">语言：</span>
+                        <span class="meta-value">英语</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">上映日期：</span>
+                        <span class="meta-value">2017-10-06</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">片长：</span>
+                        <span class="meta-value">164分钟</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">又名：</span>
+                        <span class="meta-value">银翼杀手2</span>
+                    </div>
+                </div>
+                
+                <div class="movie-genres">
+                    <span class="genre-tag">科幻</span>
+                    <span class="genre-tag">惊悚</span>
+                    <span class="genre-tag">悬疑</span>
+                </div>
+                
+                <div class="movie-synopsis">
+                    <div class="synopsis-title">剧情简介</div>
+                    <p>《银翼杀手2049》是丹尼斯·维伦纽瓦执导的一部科幻电影，是1982年经典科幻电影《银翼杀手》的续集。</p>
+                    <p>电影故事发生在2049年，人类与复制人（Replicant）共存的世界。K（瑞恩·高斯林饰）是一名新一代的银翼杀手，专门负责追捕和消灭旧型号的复制人。在一次任务中，K发现了一个惊人的秘密：一个复制人曾经生下了孩子，这在复制人历史上是前所未有的。</p>
+                    <p>为了防止这个秘密引发社会动荡，K开始调查这个孩子的下落。他的调查逐渐引向了已经消失多年的前银翼杀手瑞克·戴克（哈里森·福特饰），而戴克似乎与这个孩子有着密切的联系。</p>
+                    <p>随着调查的深入，K开始质疑自己的身份和存在的意义，他必须在真相和生存之间做出选择。</p>
+                    <p>电影通过K的故事，探讨了身份认同、人性和存在的意义等深刻主题，是一部视觉震撼、思想深刻的科幻杰作。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 视频图片模块 -->
+        <div class="content-section">
+            <h2 class="section-title">视频与图片</h2>
+            <div class="media-grid">
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Ryan%20Gosling%20as%20K%20in%20Blade%20Runner%202049&image_size=landscape_16_9" alt="剧照1">
+                    <div class="media-overlay">剧照 1</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Harrison%20Ford%20as%20Rick%20Deckard%20in%20Blade%20Runner%202049&image_size=landscape_16_9" alt="剧照2">
+                    <div class="media-overlay">剧照 2</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=futuristic%20city%20in%20Blade%20Runner%202049&image_size=landscape_16_9" alt="剧照3">
+                    <div class="media-overlay">剧照 3</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Ana%20de%20Armas%20in%20Blade%20Runner%202049&image_size=landscape_16_9" alt="剧照4">
+                    <div class="media-overlay">剧照 4</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Blade%20Runner%202049%20action%20scene&image_size=landscape_16_9" alt="剧照5">
+                    <div class="media-overlay">剧照 5</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Blade%20Runner%202049%20final%20scene&image_size=landscape_16_9" alt="剧照6">
+                    <div class="media-overlay">剧照 6</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 讨论区模块 -->
+        <div class="content-section">
+            <h2 class="section-title">讨论区</h2>
+            <div class="discussion-section">
+                <!-- 评论表单 -->
+                <div class="comment-form">
+                    <div class="comment-avatar">U</div>
+                    <div class="comment-input-area">
+                        <textarea class="comment-input" placeholder="写下你的评论..."></textarea>
+                        <div class="comment-actions">
+                            <button class="cancel-btn">取消</button>
+                            <button class="comment-btn">发表评论</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 评论列表 -->
+                <div class="comments-list">
+                    <div class="comment-item">
+                        <div class="comment-avatar">A</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">科幻迷</span>
+                                <span class="comment-time">2017-10-07 15:45</span>
+                            </div>
+                            <div class="comment-text">
+                                银翼杀手2049是一部视觉震撼的科幻杰作，导演丹尼斯·维伦纽瓦成功地延续了1982年经典的风格和主题。电影的画面非常精美，每一帧都像是一幅艺术品。瑞恩·高斯林的表演非常出色，他成功地塑造了K这个复杂的角色。哈里森·福特的回归也为电影增添了很多看点。电影的节奏虽然缓慢，但正是这种缓慢的节奏让观众能够深入思考电影所探讨的主题。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 489</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-item">
+                        <div class="comment-avatar">B</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">电影爱好者</span>
+                                <span class="comment-time">2017-10-09 10:30</span>
+                            </div>
+                            <div class="comment-text">
+                                这部电影的视觉效果非常出色，摄影和美术设计都达到了很高的水平。电影的音乐也非常棒，汉斯·季默的配乐为电影增添了很多氛围。电影的主题非常深刻，探讨了身份认同、人性和存在的意义等问题。瑞恩·高斯林和哈里森·福特的表演都非常出色，他们之间的对手戏非常精彩。虽然电影的时长较长，但我觉得每一分钟都值得。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 456</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-item">
+                        <div class="comment-avatar">C</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">影评人</span>
+                                <span class="comment-time">2017-10-13 14:20</span>
+                            </div>
+                            <div class="comment-text">
+                                银翼杀手2049是一部难得的科幻佳作，它不仅在视觉上令人震撼，在思想上也非常深刻。导演丹尼斯·维伦纽瓦成功地在尊重原作的基础上，为故事注入了新的活力。电影的摄影、美术设计和音乐都非常出色，为观众营造了一个充满未来感和神秘感的世界。瑞恩·高斯林的表演非常细腻，他成功地展现了K内心的挣扎和困惑。哈里森·福特的回归也非常精彩，他为电影增添了很多情感深度。这部电影是科幻电影的典范之作，值得反复观看。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 478</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

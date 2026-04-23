@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>热门影视 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #00ffaa;
+        }
+        
+        .logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+        
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .register-btn:hover {
+            background-color: #00e699;
+            transform: scale(1.05);
+        }
+        
+        /* 注册模态框 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .register-modal {
+            background-color: #111;
+            border: 1px solid #00ffaa;
+            border-radius: 15px;
+            width: 450px;
+            max-width: 90%;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 255, 170, 0.3);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 28px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: #00ffaa;
+        }
+        
+        .modal-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffaa;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-label {
+            color: #00ffaa;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .form-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 170, 0.3);
+            border-radius: 8px;
+            padding: 14px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #00ffaa;
+            box-shadow: 0 0 0 3px rgba(0, 255, 170, 0.2);
+        }
+        
+        .form-input::placeholder {
+            color: #666;
+        }
+        
+        .password-wrapper {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .password-toggle:hover {
+            color: #00ffaa;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .verify-code {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .verify-code input {
+            flex: 1;
+        }
+        
+        .verify-btn {
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        
+        .verify-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        .verify-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .agreement {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            color: #aaa;
+        }
+        
+        .agreement input[type="checkbox"] {
+            margin-top: 3px;
+            accent-color: #00ffaa;
+        }
+        
+        .agreement a {
+            color: #00ffaa;
+            text-decoration: none;
+        }
+        
+        .agreement a:hover {
+            text-decoration: underline;
+        }
+        
+        .submit-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #00e699;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 170, 0.4);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .login-link a {
+            color: #00ffaa;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        .success-icon {
+            font-size: 60px;
+            color: #00ffaa;
+            margin-bottom: 20px;
+        }
+        
+        .success-text {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .success-hint {
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        /* 主体内容区 */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #00ffaa;
+        }
+        
+        /* 筛选栏 */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background-color: #00ffaa;
+            color: #000;
+            font-weight: bold;
+        }
+        
+        /* 电影网格 */
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .movie-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 170, 0.2);
+        }
+        
+        .movie-poster {
+            width: 100%;
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .movie-rating {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #00ffaa;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .movie-info {
+            padding: 15px;
+        }
+        
+        .movie-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .movie-year {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        
+        .movie-genres {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .genre-tag {
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        
+        /* 分页 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+        
+        .page-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .page-btn.active {
+            background-color: #00ffaa;
+            color: #000;
+            font-weight: bold;
+        }
+        
+        .page-btn:hover:not(.active) {
+            background-color: rgba(0, 255, 170, 0.2);
+        }
+        
+        .movie-card.hidden {
+            display: none;
+        }
+        
+        .movie-card.page-hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+        </div>
+    </nav>
+    
+    <!-- 主体内容区 -->
+    <div class="main-content">
+        <h1 class="page-title" id="pageTitle">热门影视</h1>
+        
+        <!-- 筛选栏 -->
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="全部">全部</button>
+            <button class="filter-btn" data-filter="动作">动作</button>
+            <button class="filter-btn" data-filter="科幻">科幻</button>
+            <button class="filter-btn" data-filter="剧情">剧情</button>
+            <button class="filter-btn" data-filter="喜剧">喜剧</button>
+            <button class="filter-btn" data-filter="犯罪">犯罪</button>
+            <button class="filter-btn" data-filter="惊悚">惊悚</button>
+            <button class="filter-btn" data-filter="悬疑">悬疑</button>
+            <button class="filter-btn" data-filter="灾难">灾难</button>
+            <button class="filter-btn" data-filter="爱情">爱情</button>
+            <button class="filter-btn" data-filter="友情">友情</button>
+            <button class="filter-btn" data-filter="青春">青春</button>
+        </div>
+        
+        <!-- 电影网格 -->
+        <div class="movie-grid" id="movieGrid">
+            <div class="movie-card" data-genres="动作,犯罪,冒险" data-movie="fast_furious">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20action%20film%2C%20dynamic%20scene%2C%20dark%20tone&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.2</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">速度与激情10</h3>
+                    <p class="movie-year">2023</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">动作</span>
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">冒险</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="科幻,惊悚,悬疑" data-movie="blade_runner">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20sci-fi%20film%2C%20futuristic%20city%2C%20dark%20atmosphere&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.7</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">银翼杀手2049</h3>
+                    <p class="movie-year">2017</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">科幻</span>
+                        <span class="genre-tag">惊悚</span>
+                        <span class="genre-tag">悬疑</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情,犯罪" data-movie="shawshank">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20drama%20film%2C%20emotional%20scene%2C%20warm%20lighting&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.0</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">肖申克的救赎</h3>
+                    <p class="movie-year">1994</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">犯罪</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="喜剧,剧情,爱情" data-movie="king_of_comedy">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20comedy%20film%2C%20funny%20scene%2C%20bright%20colors&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.5</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">喜剧之王</h3>
+                    <p class="movie-year">1999</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">喜剧</span>
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">爱情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="惊悚,犯罪,悬疑" data-movie="seven">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20thriller%20film%2C%20suspenseful%20scene%2C%20dark%20mood&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.8</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">七宗罪</h3>
+                    <p class="movie-year">1995</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">惊悚</span>
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">悬疑</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="爱情,剧情,灾难" data-movie="titanic">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20romance%20film%2C%20romantic%20scene%2C%20soft%20lighting&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.6</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">泰坦尼克号</h3>
+                    <p class="movie-year">1997</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">爱情</span>
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">灾难</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="友情,剧情" data-movie="green_book">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Green%20Book%2C%20road%20trip%2C%201960s%20setting&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.9</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">绿皮书</h3>
+                    <p class="movie-year">2018</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">友情</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情,犯罪" data-movie="green_mile">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Green%20Mile%2C%20prison%20setting%2C%20mystical%20elements&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.1</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">绿里奇迹</h3>
+                    <p class="movie-year">1999</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">犯罪</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="科幻,冒险" data-movie="interstellar">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Interstellar%2C%20space%20travel%2C%20futuristic&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.3</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">星际穿越</h3>
+                    <p class="movie-year">2014</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">科幻</span>
+                        <span class="genre-tag">冒险</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="犯罪,剧情" data-movie="godfather">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Godfather%2C%20mafia%20theme%2C%20dark%20mood&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.6</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">教父1</h3>
+                    <p class="movie-year">1972</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="超能力,动作,科幻" data-movie="amazing_spider_man">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Amazing%20Spider-Man%2C%20superhero%2C%20action%20scene&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.2</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">超凡蜘蛛侠</h3>
+                    <p class="movie-year">2012</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">超能力</span>
+                        <span class="genre-tag">动作</span>
+                        <span class="genre-tag">科幻</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="超能力,超级英雄,科幻" data-movie="iron_man">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Iron%20Man%2C%20superhero%2C%20tech%20suit&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.5</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">钢铁侠</h3>
+                    <p class="movie-year">2008</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">超能力</span>
+                        <span class="genre-tag">超级英雄</span>
+                        <span class="genre-tag">科幻</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="喜剧,剧情" data-movie="legally_blonde">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Legally%20Blonde%2C%20comedy%2C%20law%20school&image_size=portrait_4_3');">
+                    <div class="movie-rating">7.8</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">政律俏佳人</h3>
+                    <p class="movie-year">2001</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">喜剧</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="科幻,剧情" data-movie="apes">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Rise%20of%20the%20Planet%20of%20the%20Apes%2C%20sci-fi%2C%20apes&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.1</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">猩球崛起</h3>
+                    <p class="movie-year">2011</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">科幻</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="科幻,超级英雄,动作" data-movie="avengers">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Avengers%2C%20superheroes%2C%20team%20action&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.3</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">复仇者联盟</h3>
+                    <p class="movie-year">2012</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">科幻</span>
+                        <span class="genre-tag">超级英雄</span>
+                        <span class="genre-tag">动作</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="科幻,悬疑,动作" data-movie="inception">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Inception%2C%20sci-fi%2C%20dream%20heist&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.3</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">盗梦空间</h3>
+                    <p class="movie-year">2010</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">科幻</span>
+                        <span class="genre-tag">悬疑</span>
+                        <span class="genre-tag">动作</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="科幻,动画,喜剧" data-movie="wall_e">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20WALL-E%2C%20animated%2C%20robot%2C%20futuristic&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.2</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">机器人总动员</h3>
+                    <p class="movie-year">2008</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">科幻</span>
+                        <span class="genre-tag">动画</span>
+                        <span class="genre-tag">喜剧</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="喜剧,剧情,科幻" data-movie="truman">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Truman%20Show%2C%20comedy%2C%20reality%20tv&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.9</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">楚门的世界</h3>
+                    <p class="movie-year">1998</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">喜剧</span>
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">科幻</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="犯罪,剧情,传记" data-movie="catch_me">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Catch%20Me%20If%20You%20Can%2C%20crime%2C%20cat%20and%20mouse&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.8</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">猫鼠游戏</h3>
+                    <p class="movie-year">2002</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">传记</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="爱情,友情,青春" data-movie="flipped">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Flipped%2C%20romance%2C%20coming%20of%20age&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.7</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">怦然心动</h3>
+                    <p class="movie-year">2010</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">爱情</span>
+                        <span class="genre-tag">友情</span>
+                        <span class="genre-tag">青春</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情,爱情,传记" data-movie="forrest_gump">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Forrest%20Gump%2C%20drama%2C%20life%20journey&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.5</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">阿甘正传</h3>
+                    <p class="movie-year">1994</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">爱情</span>
+                        <span class="genre-tag">传记</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="动作,超级英雄,犯罪" data-movie="dark_knight">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Dark%20Knight%2C%20superhero%2C%20action&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.4</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">蝙蝠侠：黑暗骑士</h3>
+                    <p class="movie-year">2008</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">动作</span>
+                        <span class="genre-tag">超级英雄</span>
+                        <span class="genre-tag">犯罪</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="犯罪,剧情,黑色幽默" data-movie="pulp_fiction">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Pulp%20Fiction%2C%20crime%2C%20nonlinear%20story&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.2</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">低俗小说</h3>
+                    <p class="movie-year">1994</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">黑色幽默</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="动作,历史,剧情" data-movie="gladiator">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Gladiator%2C%20action%2C%20ancient%20rome&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.9</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">角斗士</h3>
+                    <p class="movie-year">2000</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">动作</span>
+                        <span class="genre-tag">历史</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="科幻,动作,悬疑" data-movie="matrix">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Matrix%2C%20sci-fi%2C%20action&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.1</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">黑客帝国</h3>
+                    <p class="movie-year">1999</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">科幻</span>
+                        <span class="genre-tag">动作</span>
+                        <span class="genre-tag">悬疑</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情,历史,传记" data-movie="schindlers_list">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Schindler%27s%20List%2C%20drama%2C%20holocaust&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.5</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">辛德勒的名单</h3>
+                    <p class="movie-year">1993</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">历史</span>
+                        <span class="genre-tag">传记</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="犯罪,剧情,传记" data-movie="goodfellas">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Goodfellas%2C%20crime%2C%20mafia&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.0</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">好家伙</h3>
+                    <p class="movie-year">1990</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">传记</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="动画,家庭,冒险" data-movie="lion_king">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Lion%20King%2C%20animated%2C%20family&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.1</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">狮子王</h3>
+                    <p class="movie-year">1994</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">动画</span>
+                        <span class="genre-tag">家庭</span>
+                        <span class="genre-tag">冒险</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="战争,剧情,动作" data-movie="saving_private_ryan">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Saving%20Private%20Ryan%2C%20war%2C%20drama&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.0</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">拯救大兵瑞恩</h3>
+                    <p class="movie-year">1998</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">战争</span>
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">动作</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="犯罪,惊悚,剧情" data-movie="departed">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Departed%2C%20crime%2C%20thriller&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.8</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">无间道风云</h3>
+                    <p class="movie-year">2006</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">惊悚</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情,音乐,励志" data-movie="whiplash">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Whiplash%2C%20drama%2C%20music&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.0</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">爆裂鼓手</h3>
+                    <p class="movie-year">2014</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">音乐</span>
+                        <span class="genre-tag">励志</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="爱情,音乐,剧情" data-movie="la_la_land">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20La%20La%20Land%2C%20musical%2C%20romance&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.8</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">爱乐之城</h3>
+                    <p class="movie-year">2016</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">爱情</span>
+                        <span class="genre-tag">音乐</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="喜剧,剧情,友情" data-movie="intouchables">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Intouchables%2C%20comedy%2C%20drama&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.2</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">触不可及</h3>
+                    <p class="movie-year">2011</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">喜剧</span>
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">友情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="惊悚,悬疑,剧情" data-movie="gone_girl">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Gone%20Girl%2C%20thriller%2C%20mystery&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.7</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">消失的爱人</h3>
+                    <p class="movie-year">2014</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">惊悚</span>
+                        <span class="genre-tag">悬疑</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="动作,科幻,冒险" data-movie="mad_max">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Mad%20Max%3A%20Fury%20Road%2C%20action%2C%20post-apocalyptic&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.6</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">疯狂的麦克斯：狂暴之路</h3>
+                    <p class="movie-year">2015</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">动作</span>
+                        <span class="genre-tag">科幻</span>
+                        <span class="genre-tag">冒险</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情" data-movie="room">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%2012%20Angry%20Men%2C%201957%20classic%20drama%2C%20courtroom%2C%20jury%20deliberation&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.3</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">十二怒汉</h3>
+                    <p class="movie-year">1957</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情,悬疑" data-movie="big_short">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Witness%20for%20the%20Prosecution%2C%201957%20classic%20film%20noir%2C%20courtroom%20drama&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.6</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">控方证人</h3>
+                    <p class="movie-year">1957</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">悬疑</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情,爱情,移民" data-movie="brooklyn">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Brooklyn%2C%20drama%2C%20romance&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.3</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">布鲁克林</h3>
+                    <p class="movie-year">2015</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">爱情</span>
+                        <span class="genre-tag">移民</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="动作,冒险,剧情" data-movie="revenant">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Revenant%2C%20action%2C%20survival&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.4</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">荒野猎人</h3>
+                    <p class="movie-year">2015</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">动作</span>
+                        <span class="genre-tag">冒险</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情" data-movie="spotlight">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Dead%20Poets%20Society%2C%201989%20classic%20drama%2C%20english%20teacher%2C%20poetry&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.1</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">死亡诗社</h3>
+                    <p class="movie-year">1989</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="奇幻,爱情,剧情" data-movie="shape_of_water">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Shape%20of%20Water%2C%20fantasy%2C%20romance&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.3</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">水形物语</h3>
+                    <p class="movie-year">2017</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">奇幻</span>
+                        <span class="genre-tag">爱情</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情,犯罪,黑色幽默" data-movie="three_billboards">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Three%20Billboards%20Outside%20Ebbing%2C%20Missouri%2C%20drama%2C%20crime&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.7</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">三块广告牌</h3>
+                    <p class="movie-year">2017</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">黑色幽默</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情" data-movie="call_me_by_your_name">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20One%20Flew%20Over%20the%20Cuckoos%20Nest%2C%201975%20classic%20drama%2C%20mental%20institution&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.1</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">飞越疯人院</h3>
+                    <p class="movie-year">1975</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="战争,动作,历史" data-movie="dunkirk">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Dunkirk%2C%20war%2C%20action&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.4</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">敦刻尔克</h3>
+                    <p class="movie-year">2017</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">战争</span>
+                        <span class="genre-tag">动作</span>
+                        <span class="genre-tag">历史</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="恐怖,惊悚,悬疑" data-movie="get_out">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Get%20Out%2C%20horror%2C%20thriller&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.2</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">逃出绝命镇</h3>
+                    <p class="movie-year">2017</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">恐怖</span>
+                        <span class="genre-tag">惊悚</span>
+                        <span class="genre-tag">悬疑</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="音乐,爱情,剧情" data-movie="a_star_is_born">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20A%20Star%20Is%20Born%2C%20musical%2C%20romance&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.5</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">一个明星的诞生</h3>
+                    <p class="movie-year">2018</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">音乐</span>
+                        <span class="genre-tag">爱情</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情,家庭,传记" data-movie="roma">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Roma%2C%20drama%2C%20family&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.6</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">罗马</h3>
+                    <p class="movie-year">2018</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">家庭</span>
+                        <span class="genre-tag">传记</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="传记,音乐,剧情" data-movie="bohemian_rhapsody">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Bohemian%20Rhapsody%2C%20biography%2C%20music&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.7</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">波西米亚狂想曲</h3>
+                    <p class="movie-year">2018</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">传记</span>
+                        <span class="genre-tag">音乐</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情,惊悚,犯罪" data-movie="joker">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Joker%2C%20drama%2C%20thriller&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.9</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">小丑</h3>
+                    <p class="movie-year">2019</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">惊悚</span>
+                        <span class="genre-tag">犯罪</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="movie-card" data-genres="剧情,惊悚,黑色幽默" data-movie="parasite">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Parasite%2C%20drama%2C%20thriller&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.1</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">寄生虫</h3>
+                    <p class="movie-year">2019</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">惊悚</span>
+                        <span class="genre-tag">黑色幽默</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 分页 -->
+        <div class="pagination" id="pagination">
+            <button class="page-btn" id="prevBtn">上一页</button>
+            <button class="page-btn active" data-page="1">1</button>
+            <button class="page-btn" data-page="2">2</button>
+            <button class="page-btn" data-page="3">3</button>
+            <button class="page-btn" data-page="4">4</button>
+            <button class="page-btn" data-page="5">5</button>
+            <button class="page-btn" id="nextBtn">下一页</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const movieCards = document.querySelectorAll('.movie-card');
+            const pageBtns = document.querySelectorAll('.page-btn[data-page]');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageTitle = document.getElementById('pageTitle');
+            const pagination = document.getElementById('pagination');
+            
+            const cardsPerPage = 10;
+            let currentPage = 1;
+            let currentFilter = '全部';
+            let totalPages = 5;
+            
+            // 从URL参数中获取初始页面
+            const urlParams = new URLSearchParams(window.location.search);
+            const pageParam = urlParams.get('page');
+            if (pageParam && !isNaN(pageParam)) {
+                currentPage = parseInt(pageParam);
+            }
+            
+            function updateDisplay() {
+                const filteredCards = [];
+                movieCards.forEach(card => {
+                    const genres = card.getAttribute('data-genres');
+                    if (currentFilter === '全部' || genres.includes(currentFilter)) {
+                        card.classList.remove('hidden');
+                        filteredCards.push(card);
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+                
+                totalPages = Math.ceil(filteredCards.length / cardsPerPage);
+                if (totalPages < 1) totalPages = 1;
+                
+                if (currentPage > totalPages) currentPage = totalPages;
+                
+                filteredCards.forEach((card, index) => {
+                    const startIndex = (currentPage - 1) * cardsPerPage;
+                    const endIndex = startIndex + cardsPerPage;
+                    if (index >= startIndex && index < endIndex) {
+                        card.classList.remove('page-hidden');
+                    } else {
+                        card.classList.add('page-hidden');
+                    }
+                });
+                
+                updatePageButtons();
+                
+                if (currentFilter === '全部') {
+                    pageTitle.textContent = '热门影视';
+                    pagination.style.display = 'flex';
+                } else {
+                    pageTitle.textContent = currentFilter + '电影';
+                    pagination.style.display = 'none';
+                }
+            }
+            
+            function updatePageButtons() {
+                pageBtns.forEach(btn => {
+                    const page = parseInt(btn.getAttribute('data-page'));
+                    btn.classList.remove('active');
+                    if (page === currentPage) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                prevBtn.style.opacity = currentPage === 1 ? '0.5' : '1';
+                prevBtn.style.cursor = currentPage === 1 ? 'not-allowed' : 'pointer';
+                nextBtn.style.opacity = currentPage === totalPages ? '0.5' : '1';
+                nextBtn.style.cursor = currentPage === totalPages ? 'not-allowed' : 'pointer';
+            }
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    currentFilter = filter;
+                    currentPage = 1;
+                    
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    updateDisplay();
+                });
+            });
+            
+            pageBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const page = parseInt(this.getAttribute('data-page'));
+                    currentPage = page;
+                    updateDisplay();
+                });
+            });
+            
+            prevBtn.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updateDisplay();
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updateDisplay();
+                }
+            });
+            
+            // 为所有电影卡片添加点击事件
+            movieCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const movie = this.getAttribute('data-movie');
+                    let url = 'movie_detail.html';
+                    
+                    // 根据电影类型跳转到对应的详情页面
+                    if (movie) {
+                        url = 'movie_detail_' + movie + '.html';
+                    }
+                    
+                    window.location.href = url;
+                });
+            });
+            
+            updateDisplay();
+        });
+        
+        // 注册模态框功能
+        const registerBtn = document.querySelector('.register-btn');
+        const modalOverlay = document.querySelector('.modal-overlay');
+        const modalClose = document.querySelector('.modal-close');
+        const registerForm = document.getElementById('registerForm');
+        const successMessage = document.querySelector('.success-message');
+        const formContent = document.querySelector('.form-content');
+        
+        registerBtn.addEventListener('click', function() {
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        modalClose.addEventListener('click', function() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            resetForm();
+        });
+        
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                resetForm();
+            }
+        });
+        
+        function resetForm() {
+            registerForm.reset();
+            successMessage.classList.remove('show');
+            formContent.style.display = 'block';
+        }
+        
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            formContent.style.display = 'none';
+            successMessage.classList.add('show');
+        });
+        
+        // 密码显示/隐藏切换
+        const passwordToggles = document.querySelectorAll('.password-toggle');
+        passwordToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.textContent = '🙈';
+                } else {
+                    input.type = 'password';
+                    this.textContent = '👁️';
+                }
+            });
+        });
+        
+        // 验证码倒计时
+        const verifyBtn = document.querySelector('.verify-btn');
+        verifyBtn.addEventListener('click', function() {
+            let countdown = 60;
+            this.disabled = true;
+            this.textContent = countdown + '秒后重试';
+            
+            const timer = setInterval(() => {
+                countdown--;
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    this.disabled = false;
+                    this.textContent = '获取验证码';
+                } else {
+                    this.textContent = countdown + '秒后重试';
+                }
+            }, 1000);
+        });
+    </script>
+    
+    <!-- 注册模态框 -->
+    <div class="modal-overlay">
+        <div class="register-modal">
+            <button class="modal-close">×</button>
+            <h2 class="modal-title">注册账号</h2>
+            <div class="form-content">
+                <form class="modal-form" id="registerForm">
+                    <div class="form-group">
+                        <label class="form-label">用户名</label>
+                        <input type="text" class="form-input" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">邮箱</label>
+                        <input type="email" class="form-input" placeholder="请输入邮箱地址" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">密码</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-input" id="password" placeholder="请输入密码（8-20位）" required>
+                            <button type="button" class="password-toggle">👁️</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">确认密码</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-input" id="confirmPassword" placeholder="请再次输入密码" required>
+                            <button type="button" class="password-toggle">👁️</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">验证码</label>
+                        <div class="verify-code">
+                            <input type="text" class="form-input" placeholder="请输入验证码" required>
+                            <button type="button" class="verify-btn">获取验证码</button>
+                        </div>
+                    </div>
+                    <div class="agreement">
+                        <input type="checkbox" id="agree" required>
+                        <label for="agree">我已阅读并同意<a href="declaration.html">《用户协议》</a>和<a href="declaration.html">《隐私政策》</a></label>
+                    </div>
+                    <button type="submit" class="submit-btn">立即注册</button>
+                </form>
+            </div>
+            <div class="success-message">
+                <div class="success-icon">✓</div>
+                <div class="success-text">注册成功！</div>
+                <div class="success-hint">欢迎加入洞悉影视，开始探索精彩影视世界</div>
+            </div>
+            <div class="login-link">
+                已有账号？<a href="#">立即登录</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

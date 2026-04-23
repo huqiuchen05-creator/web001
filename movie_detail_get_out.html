@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逃出绝命镇 - 电影详情 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+        
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* 主体内容区 */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+        
+        /* 电影详情容器 */
+        .movie-detail-container {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        /* 电影海报 */
+        .movie-poster {
+            flex: 0 0 300px;
+            height: 450px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.3);
+        }
+        
+        /* 电影信息 */
+        .movie-info {
+            flex: 1;
+        }
+        
+        .movie-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ffaa;
+        }
+        
+        .movie-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meta-label {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+        
+        .meta-value {
+            font-size: 16px;
+            color: #fff;
+        }
+        
+        /* 电影简介 */
+        .movie-synopsis {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ffaa;
+        }
+        
+        .synopsis-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+        
+        /* 图片展示 */
+        .movie-photos {
+            margin-bottom: 50px;
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .photo-item {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 讨论区 */
+        .movie-discussion {
+            margin-bottom: 50px;
+        }
+        
+        .comment-form {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00ffaa;
+            border-radius: 5px;
+            color: #fff;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .submit-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .comments-section {
+            margin-top: 30px;
+        }
+        
+        .comment-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .commenter-name {
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .comment-date {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .comment-content {
+            line-height: 1.5;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+        </div>
+    </nav>
+    
+    <!-- 主体内容区 -->
+    <div class="main-content">
+        <a href="template2.html?page=5" class="back-btn">← 返回列表</a>
+        
+        <!-- 电影详情 -->
+        <div class="movie-detail-container">
+            <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Get%20Out%2C%20horror%2C%20thriller%2C%20suspenseful%20atmosphere&image_size=portrait_4_3');"></div>
+            <div class="movie-info">
+                <h1 class="movie-title">逃出绝命镇</h1>
+                <div class="movie-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">年份</span>
+                        <span class="meta-value">2017</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">导演</span>
+                        <span class="meta-value">乔丹·皮尔</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">编剧</span>
+                        <span class="meta-value">乔丹·皮尔</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">主演</span>
+                        <span class="meta-value">丹尼尔·卡卢亚, 艾莉森·威廉姆斯, 凯瑟琳·基纳</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">制片国家/地区</span>
+                        <span class="meta-value">美国</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">语言</span>
+                        <span class="meta-value">英语</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">上映日期</span>
+                        <span class="meta-value">2017-02-24</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">片长</span>
+                        <span class="meta-value">104分钟</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">又名</span>
+                        <span class="meta-value">访吓</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 电影简介 -->
+        <div class="movie-synopsis">
+            <h2 class="section-title">剧情简介</h2>
+            <p class="synopsis-text">
+                克里斯（丹尼尔·卡卢亚饰）是一位年轻的非裔美国摄影师，他和白人女友露丝（艾莉森·威廉姆斯饰）相恋已久。露丝邀请克里斯去她父母家度过周末，克里斯有些担心自己的种族会成为问题，但露丝向他保证她的家人不会在意。然而，当他们到达露丝父母家后，克里斯发现了一些奇怪的事情：露丝的父母和他们的黑人仆人行为异常，周围的环境也充满了诡异的氛围。随着时间的推移，克里斯逐渐发现了一个可怕的秘密：露丝的家人和他们的朋友实际上是一个邪教组织，他们通过手术将白人的意识移植到黑人的身体里，以获得年轻的身体和特殊的能力。克里斯必须想办法逃出这个充满危险的地方。
+            </p>
+        </div>
+        
+        <!-- 图片展示 -->
+        <div class="movie-photos">
+            <h2 class="section-title">剧照</h2>
+            <div class="photo-grid">
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Get%20Out%20movie%20scene%2C%20couple%20arriving%20at%20mansion%2C%20tense%20atmosphere&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Get%20Out%20movie%20scene%2C%20strange%20servants%2C%20eerie%20behavior&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Get%20Out%20movie%20scene%2C%20party%20scene%2C%20awkward%20interactions&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Get%20Out%20movie%20scene%2C%20hypnosis%20scene%2C%20suspenseful%20moment&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Get%20Out%20movie%20scene%2C%20escape%20attempt%2C%20action%20sequence&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Get%20Out%20movie%20scene%2C%20climax%20scene%2C%20confrontation&image_size=landscape_4_3');"></div>
+            </div>
+        </div>
+        
+        <!-- 讨论区 -->
+        <div class="movie-discussion">
+            <h2 class="section-title">讨论区</h2>
+            <div class="comment-form">
+                <div class="form-group">
+                    <label class="form-label" for="name">用户名</label>
+                    <input type="text" id="name" class="form-input" placeholder="请输入用户名">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="comment">评论内容</label>
+                    <textarea id="comment" class="form-textarea" placeholder="请输入评论内容"></textarea>
+                </div>
+                <button class="submit-btn">提交评论</button>
+            </div>
+            <div class="comments-section">
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">恐怖电影爱好者</span>
+                        <span class="comment-date">2024-01-15</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影真的太惊悚了！乔丹·皮尔的导演处女作非常成功，他将恐怖元素与社会议题相结合，创造了一部既有娱乐性又有深度的电影。丹尼尔·卡卢亚的表演非常出色，他把克里斯的恐惧和困惑演绎得淋漓尽致。电影的剧情设计很巧妙，有很多伏笔和反转，让人猜不透接下来会发生什么。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">社会评论家</span>
+                        <span class="comment-date">2024-01-10</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影对种族问题的探讨非常深刻，它通过恐怖电影的形式揭示了美国社会中潜藏的种族歧视。电影中的很多细节都充满了象征意义，比如白人对黑人身体的渴望，实际上反映了白人对黑人文化和身体的占有欲。乔丹·皮尔的剧本写得非常出色，他用恐怖元素来隐喻现实中的种族问题，非常有创意。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">电影评论家</span>
+                        <span class="comment-date">2024-01-05</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影获得了奥斯卡最佳原创剧本奖，实至名归。乔丹·皮尔的导演技巧非常出色，他营造了一种紧张的氛围，让观众一直处于不安之中。电影的节奏把握得很好，从开始的平静到后来的紧张，逐渐升级。丹尼尔·卡卢亚的表演也很出色，他凭借这部电影获得了奥斯卡最佳男主角提名。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

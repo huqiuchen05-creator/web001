@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飞越疯人院 - 影视详情 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0,255,170,0.2);
+            transform: translateX(-5px);
+        }
+
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+
+        .movie-detail-container {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .movie-poster {
+            flex: 0 0 300px;
+            height: 450px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.3);
+        }
+
+        .movie-info {
+            flex: 1;
+        }
+
+        .movie-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ffaa;
+        }
+
+        .movie-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .movie-synopsis {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ffaa;
+        }
+
+        .synopsis-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+
+        .movie-photos {
+            margin-bottom: 50px;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .photo-item {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+
+        .movie-discussion {
+            margin-bottom: 50px;
+        }
+
+        .comment-form {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00ffaa;
+            border-radius: 5px;
+            color: #fff;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .comments-section {
+            margin-top: 30px;
+        }
+
+        .comment-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .commenter-name {
+            font-weight: bold;
+            color: #00ffaa;
+        }
+
+        .comment-date {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .comment-content {
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <a href="template2.html?page=5" class="back-btn">← 返回列表</a>
+
+        <div class="movie-detail-container">
+            <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20One%20Flew%20Over%20the%20Cuckoos%20Nest%2C%201975%20classic%20drama%2C%20mental%20institution&image_size=portrait_4_3');"></div>
+            <div class="movie-info">
+                <h1 class="movie-title">飞越疯人院</h1>
+                <div class="movie-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">年份</span>
+                        <span class="meta-value">1975</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">导演</span>
+                        <span class="meta-value">Milos Forman</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">编剧</span>
+                        <span class="meta-value">Lawrence Hauben, Bo Goldman</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">主演</span>
+                        <span class="meta-value">Jack Nicholson, Louise Fletcher, Michael Berryman</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">制片国家/地区</span>
+                        <span class="meta-value">美国</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">语言</span>
+                        <span class="meta-value">英语</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">上映日期</span>
+                        <span class="meta-value">1975-11-19</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">片长</span>
+                        <span class="meta-value">133分钟</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-synopsis">
+            <h2 class="section-title">剧情简介</h2>
+            <p class="synopsis-text">
+                《飞越疯人院》是Milos Forman执导的经典心理剧情片，改编自肯·克西的同名小说。兰德尔·麦克墨菲（Jack Nicholson饰）是一个有反叛精神的男人，他因打架被送进精神病院。在医院里，他遇到了严格的护士长拉契特（Louise Fletcher饰），她用冷酷的方式管理着医院。麦克墨菲开始挑战医院的规则，他鼓励其他病人追求自由和快乐，挑战权威。在他的影响下，病人们开始重新审视自己的生活。然而，麦克墨菲的越轨行为最终导致了悲剧性的后果，他被进行了脑部手术，变成了一个顺从的人。电影以开放式的结局，让观众反思自由、权威和人性的意义。
+            </p>
+        </div>
+
+        <div class="movie-photos">
+            <h2 class="section-title">剧照</h2>
+            <div class="photo-grid">
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=One%20Flew%20Over%20the%20Cuckoos%20Nest%20movie%20scene%2C%20mental%20institution%2C%20ward&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=One%20Flew%20Over%20the%20Cuckoos%20Nest%20movie%20scene%2C%20Jack%20Nicholson%20character&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=One%20Flew%20Over%20the%20Cuckoos%20Nest%20movie%20scene%2C%20nurse%20Ratched&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=One%20Flew%20Over%20the%20Cuckoos%20Nest%20movie%20scene%2C%20patient%20group%20therapy&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=One%20Flew%20Over%20the%20Cuckoos%20Nest%20movie%20scene%2C%20fishing%20trip%20rebellion&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=One%20Flew%20Over%20the%20Cuckoos%20Nest%20movie%20scene%2C%20dramatic%20confrontation&image_size=landscape_4_3');"></div>
+            </div>
+        </div>
+
+        <div class="movie-discussion">
+            <h2 class="section-title">讨论区</h2>
+            <div class="comment-form">
+                <div class="form-group">
+                    <label class="form-label" for="name">用户名</label>
+                    <input type="text" id="name" class="form-input" placeholder="请输入用户名">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="comment">评论内容</label>
+                    <textarea id="comment" class="form-textarea" placeholder="请输入评论内容"></textarea>
+                </div>
+                <button class="submit-btn">提交评论</button>
+            </div>
+            <div class="comments-section">
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">经典电影爱好者</span>
+                        <span class="comment-date">2024-05-10</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影太经典了！Jack Nicholson的表演堪称完美，他把麦克墨菲的狂野和魅力演绎得淋漓尽致。Louise Fletcher饰演的护士长拉契特让人恨得牙痒痒，但这就是一个好演员的体现。电影的主题非常深刻，关于自由、权威和人性。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">心理学爱好者</span>
+                        <span class="comment-date">2024-05-15</span>
+                    </div>
+                    <div class="comment-content">
+                        电影对精神病院的描写让人深思。拉契特护士长用"治疗"的名义控制病人，实际上是在剥夺他们的自由和尊严。麦克墨菲的到来打破了这种平衡，他让病人们重新找回了自己。这部电影是对极权主义的有力批判。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">电影史研究者</span>
+                        <span class="comment-date">2024-05-20</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影获得了奥斯卡最佳影片、最佳导演、最佳男主角、最佳女主角等五项大奖，实至名归。Milos Forman的导演风格非常独特，他善于在现实主义和象征主义之间找到平衡。电影的结局非常有力量，让人久久不能忘怀。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

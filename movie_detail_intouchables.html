@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>触不可及 - 影视详情 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+        
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* 主体内容区 */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #00ffaa;
+        }
+        
+        /* 电影详情容器 */
+        .movie-detail-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        /* 电影海报区域 */
+        .movie-poster-section {
+            position: relative;
+        }
+        
+        .movie-poster {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.3);
+        }
+        
+        .movie-rating {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #00ffaa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        /* 电影信息区域 */
+        .movie-info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .movie-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .movie-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .meta-label {
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .meta-value {
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .movie-genres {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .genre-tag {
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+        
+        .movie-synopsis {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+        
+        .synopsis-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ffaa;
+            margin-bottom: 10px;
+        }
+        
+        /* 内容模块 */
+        .content-section {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ffaa;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: rgba(0, 255, 170, 0.3);
+        }
+        
+        /* 视频图片模块 */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .media-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .media-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .media-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .media-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 10px;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        /* 讨论区模块 */
+        .discussion-section {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+        }
+        
+        .comment-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .comment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ffaa;
+            font-weight: bold;
+        }
+        
+        .comment-input-area {
+            flex: 1;
+        }
+        
+        .comment-input {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 170, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            color: #fff;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .comment-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .comment-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .cancel-btn {
+            background-color: transparent;
+            color: #aaa;
+            border: 1px solid #aaa;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .comment-item {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .comment-time {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .comment-text {
+            line-height: 1.5;
+        }
+        
+        .comment-reactions {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .reaction-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .reaction-btn:hover {
+            color: #00ffaa;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+        </div>
+    </nav>
+    
+    <!-- 主体内容区 -->
+    <div class="main-content">
+        <a href="template2.html?page=4" class="back-btn">← 返回列表</a>
+        
+        <h1 class="page-title">触不可及</h1>
+        
+        <!-- 电影详情容器 -->
+        <div class="movie-detail-container">
+            <!-- 电影海报区域 -->
+            <div class="movie-poster-section">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Intouchables%2C%20comedy%20drama%2C%20two%20men%20from%20different%20backgrounds&image_size=portrait_4_3" alt="触不可及" class="movie-poster">
+                <div class="movie-rating">9.2</div>
+            </div>
+            
+            <!-- 电影信息区域 -->
+            <div class="movie-info-section">
+                <h2 class="movie-title">触不可及</h2>
+                
+                <div class="movie-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">年份：</span>
+                        <span class="meta-value">2011</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">导演：</span>
+                        <span class="meta-value">奥利维·那卡什、艾力克·托兰达</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">编剧：</span>
+                        <span class="meta-value">奥利维·那卡什、艾力克·托兰达</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">主演：</span>
+                        <span class="meta-value">弗朗索瓦·克鲁塞、奥玛·赛、安娜·勒尼</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">国家/地区：</span>
+                        <span class="meta-value">法国</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">语言：</span>
+                        <span class="meta-value">法语</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">上映日期：</span>
+                        <span class="meta-value">2011-11-02</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">片长：</span>
+                        <span class="meta-value">112分钟</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">又名：</span>
+                        <span class="meta-value">无法触碰、闪亮人生</span>
+                    </div>
+                </div>
+                
+                <div class="movie-genres">
+                    <span class="genre-tag">喜剧</span>
+                    <span class="genre-tag">剧情</span>
+                    <span class="genre-tag">友情</span>
+                </div>
+                
+                <div class="movie-synopsis">
+                    <div class="synopsis-title">剧情简介</div>
+                    <p>《触不可及》是奥利维·那卡什和艾力克·托兰达执导的一部喜剧剧情电影，根据真实故事改编。</p>
+                    <p>菲利普（弗朗索瓦·克鲁塞饰）是一位富有的贵族，因一次跳伞事故导致高位截瘫，需要一位全职陪护。德里斯（奥玛·赛饰）是一个刚从监狱释放的年轻人，来自贫民窟，没有任何护理经验。</p>
+                    <p>尽管两人背景差异巨大，菲利普却选择了德里斯作为他的陪护。德里斯的直率和幽默给菲利普的生活带来了新的活力，而菲利普也教会了德里斯很多人生道理。两人逐渐建立起了深厚的友谊，互相影响，共同成长。</p>
+                    <p>电影通过这个故事，展现了友谊的力量和人性的美好，是一部温暖感人的喜剧电影。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 视频图片模块 -->
+        <div class="content-section">
+            <h2 class="section-title">视频与图片</h2>
+            <div class="media-grid">
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Intouchables%20movie%20scene%2C%20two%20men%20laughing%2C%20comedy%20moment&image_size=landscape_16_9" alt="剧照1">
+                    <div class="media-overlay">剧照 1</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Intouchables%20movie%20scene%2C%20man%20in%20wheelchair%2C%20assistant&image_size=landscape_16_9" alt="剧照2">
+                    <div class="media-overlay">剧照 2</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Intouchables%20movie%20scene%2C%20cultural%20difference%2C%20music%20scene&image_size=landscape_16_9" alt="剧照3">
+                    <div class="media-overlay">剧照 3</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Intouchables%20movie%20scene%2C%20friendship%20moment%2C%20heartwarming&image_size=landscape_16_9" alt="剧照4">
+                    <div class="media-overlay">剧照 4</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Intouchables%20movie%20scene%2C%20luxury%20setting%2C%20contrast&image_size=landscape_16_9" alt="剧照5">
+                    <div class="media-overlay">剧照 5</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Intouchables%20movie%20scene%2C%20emotional%20climax%2C%20connection&image_size=landscape_16_9" alt="剧照6">
+                    <div class="media-overlay">剧照 6</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 讨论区模块 -->
+        <div class="content-section">
+            <h2 class="section-title">讨论区</h2>
+            <div class="discussion-section">
+                <!-- 评论表单 -->
+                <div class="comment-form">
+                    <div class="comment-avatar">U</div>
+                    <div class="comment-input-area">
+                        <textarea class="comment-input" placeholder="写下你的评论..."></textarea>
+                        <div class="comment-actions">
+                            <button class="cancel-btn">取消</button>
+                            <button class="comment-btn">发表评论</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 评论列表 -->
+                <div class="comments-list">
+                    <div class="comment-item">
+                        <div class="comment-avatar">A</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">友谊至上</span>
+                                <span class="comment-time">2011-11-03 15:45</span>
+                            </div>
+                            <div class="comment-text">
+                                触不可及是一部非常感人的电影，两个来自完全不同背景的人建立起如此深厚的友谊，让人相信人与人之间的连接可以超越一切差异。奥玛·赛的表演非常出色，把德里斯的直率和幽默演绎得淋漓尽致。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 523</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-item">
+                        <div class="comment-avatar">B</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">电影爱好者</span>
+                                <span class="comment-time">2011-11-05 10:30</span>
+                            </div>
+                            <div class="comment-text">
+                                这是一部充满温情和幽默的电影，让我在笑声中感受到了人性的美好。菲利普和德里斯的互动非常自然，他们的友谊发展也很真实。推荐给所有喜欢温馨喜剧的人。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 489</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-item">
+                        <div class="comment-avatar">C</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">法国电影迷</span>
+                                <span class="comment-time">2011-11-09 14:20</span>
+                            </div>
+                            <div class="comment-text">
+                                法国电影总是能在平凡中发现不平凡的美。这部电影根据真实故事改编，更加让人感动。它不仅讲述了友谊，也探讨了阶级差异和人性的本质。演员的表演非常出色，音乐也很动人。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 512</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

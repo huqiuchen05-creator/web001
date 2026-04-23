@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>控方证人 - 影视详情 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0,255,170,0.2);
+            transform: translateX(-5px);
+        }
+
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+
+        .movie-detail-container {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .movie-poster {
+            flex: 0 0 300px;
+            height: 450px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.3);
+        }
+
+        .movie-info {
+            flex: 1;
+        }
+
+        .movie-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ffaa;
+        }
+
+        .movie-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .movie-synopsis {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ffaa;
+        }
+
+        .synopsis-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+
+        .movie-photos {
+            margin-bottom: 50px;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .photo-item {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+
+        .movie-discussion {
+            margin-bottom: 50px;
+        }
+
+        .comment-form {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00ffaa;
+            border-radius: 5px;
+            color: #fff;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .comments-section {
+            margin-top: 30px;
+        }
+
+        .comment-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .commenter-name {
+            font-weight: bold;
+            color: #00ffaa;
+        }
+
+        .comment-date {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .comment-content {
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <a href="template2.html?page=4" class="back-btn">← 返回列表</a>
+
+        <div class="movie-detail-container">
+            <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Witness%20for%20the%20Prosecution%2C%201957%20classic%20film%20noir%2C%20courtroom%20drama&image_size=portrait_4_3');"></div>
+            <div class="movie-info">
+                <h1 class="movie-title">控方证人</h1>
+                <div class="movie-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">年份</span>
+                        <span class="meta-value">1957</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">导演</span>
+                        <span class="meta-value">Billy Wilder</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">编剧</span>
+                        <span class="meta-value">Billy Wilder, Harry Kurtizmas</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">主演</span>
+                        <span class="meta-value">Tyrone Power, Marlene Dietrich, Charles Laughton</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">制片国家/地区</span>
+                        <span class="meta-value">美国</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">语言</span>
+                        <span class="meta-value">英语</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">上映日期</span>
+                        <span class="meta-value">1957-12-17</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">片长</span>
+                        <span class="meta-value">116分钟</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-synopsis">
+            <h2 class="section-title">剧情简介</h2>
+            <p class="synopsis-text">
+                《控方证人》是Billy Wilder执导的经典法庭悬疑片，改编自阿加莎·克里斯蒂的同名戏剧。伦敦著名辩护律师罗巴茨爵士（Charles Laughton饰）为了一起谋杀案的被告——年轻男子莱昂纳德（TYRONE POWER饰）辩护。莱昂纳德被控谋杀了富婆艾米莉（Norma Vashi饰）。然而，案件的关键证人却是莱昂纳德的妻子克里斯汀（Marlene Dietrich饰）。她出庭作证，证明丈夫案发当晚不在场。但罗巴茨爵士发现克里斯汀的证词中隐藏着惊人的秘密。随着审判的深入，案件出现了戏剧性的转折，真正的凶手浮出水面。
+            </p>
+        </div>
+
+        <div class="movie-photos">
+            <h2 class="section-title">剧照</h2>
+            <div class="photo-grid">
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20courtroom%20drama%2C%20lawyer&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20testimony%20moment&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20dramatic%20revelation&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20emotional%20confrontation&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20verdict%20moment&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20final%20twist&image_size=landscape_4_3');"></div>
+            </div>
+        </div>
+
+        <div class="movie-discussion">
+            <h2 class="section-title">讨论区</h2>
+            <div class="comment-form">
+                <div class="form-group">
+                    <label class="form-label" for="name">用户名</label>
+                    <input type="text" id="name" class="form-input" placeholder="请输入用户名">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="comment">评论内容</label>
+                    <textarea id="comment" class="form-textarea" placeholder="请输入评论内容"></textarea>
+                </div>
+                <button class="submit-btn">提交评论</button>
+            </div>
+            <div class="comments-section">
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">悬疑片爱好者</span>
+                        <span class="comment-date">2024-03-15</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影的剧本太精彩了！阿加莎·克里斯蒂的原著加上Billy Wilder的导演，让这部电影成为了经典中的经典。最后的转折让人震惊，Charles Laughton的表演非常有力量。强烈推荐给喜欢悬疑片的朋友！
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">经典电影迷</span>
+                        <span class="comment-date">2024-03-18</span>
+                    </div>
+                    <div class="comment-content">
+                        1957年的电影能拍得如此精彩，真的让人佩服。Marlene Dietrich的表演非常惊艳，她饰演的德国女人角色非常有深度。整部电影节奏紧凑，没有一刻冷场，是法庭悬疑片的巅峰之作。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">剧本研究者</span>
+                        <span class="comment-date">2024-03-22</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影的剧本结构非常精巧，每一个细节都有伏笔，最后的转折又在情理之中。Billy Wilder善于在悬疑和喜剧之间找到平衡，让这部电影既紧张又好看。台词写得也非常精彩。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

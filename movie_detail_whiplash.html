@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爆裂鼓手 - 影视详情 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+        
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* 主体内容区 */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #00ffaa;
+        }
+        
+        /* 电影详情容器 */
+        .movie-detail-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        /* 电影海报区域 */
+        .movie-poster-section {
+            position: relative;
+        }
+        
+        .movie-poster {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.3);
+        }
+        
+        .movie-rating {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #00ffaa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        /* 电影信息区域 */
+        .movie-info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .movie-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .movie-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .meta-label {
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .meta-value {
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .movie-genres {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .genre-tag {
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+        
+        .movie-synopsis {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+        
+        .synopsis-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ffaa;
+            margin-bottom: 10px;
+        }
+        
+        /* 内容模块 */
+        .content-section {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ffaa;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: rgba(0, 255, 170, 0.3);
+        }
+        
+        /* 视频图片模块 */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .media-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .media-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .media-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .media-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 10px;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        /* 讨论区模块 */
+        .discussion-section {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+        }
+        
+        .comment-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .comment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ffaa;
+            font-weight: bold;
+        }
+        
+        .comment-input-area {
+            flex: 1;
+        }
+        
+        .comment-input {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 170, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            color: #fff;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .comment-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .comment-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .cancel-btn {
+            background-color: transparent;
+            color: #aaa;
+            border: 1px solid #aaa;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .comment-item {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .comment-time {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .comment-text {
+            line-height: 1.5;
+        }
+        
+        .comment-reactions {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .reaction-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .reaction-btn:hover {
+            color: #00ffaa;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+        </div>
+    </nav>
+    
+    <!-- 主体内容区 -->
+    <div class="main-content">
+        <a href="template2.html?page=4" class="back-btn">← 返回列表</a>
+        
+        <h1 class="page-title">爆裂鼓手</h1>
+        
+        <!-- 电影详情容器 -->
+        <div class="movie-detail-container">
+            <!-- 电影海报区域 -->
+            <div class="movie-poster-section">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Whiplash%2C%20drama%2C%20music&image_size=portrait_4_3" alt="爆裂鼓手" class="movie-poster">
+                <div class="movie-rating">9.0</div>
+            </div>
+            
+            <!-- 电影信息区域 -->
+            <div class="movie-info-section">
+                <h2 class="movie-title">爆裂鼓手</h2>
+                
+                <div class="movie-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">年份：</span>
+                        <span class="meta-value">2014</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">导演：</span>
+                        <span class="meta-value">达米恩·查泽雷</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">编剧：</span>
+                        <span class="meta-value">达米恩·查泽雷</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">主演：</span>
+                        <span class="meta-value">迈尔斯·特勒、J·K·西蒙斯、梅丽莎·贝努瓦</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">国家/地区：</span>
+                        <span class="meta-value">美国</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">语言：</span>
+                        <span class="meta-value">英语</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">上映日期：</span>
+                        <span class="meta-value">2014-10-10</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">片长：</span>
+                        <span class="meta-value">106分钟</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">又名：</span>
+                        <span class="meta-value">鼓动真我</span>
+                    </div>
+                </div>
+                
+                <div class="movie-genres">
+                    <span class="genre-tag">剧情</span>
+                    <span class="genre-tag">音乐</span>
+                    <span class="genre-tag">励志</span>
+                </div>
+                
+                <div class="movie-synopsis">
+                    <div class="synopsis-title">剧情简介</div>
+                    <p>《爆裂鼓手》讲述了一个年轻鼓手追求音乐梦想的故事。</p>
+                    <p>安德鲁·内曼（迈尔斯·特勒饰）是一位年轻的鼓手，他梦想成为像 Buddy Rich 那样的传奇鼓手。他被著名音乐学校的教授特伦斯·弗莱彻（J·K·西蒙斯饰）选中，加入了学校的顶级爵士乐队。</p>
+                    <p>弗莱彻是一位极其严格的老师，他对学生要求极高，经常使用侮辱和恐吓的方式来激励学生。在弗莱彻的指导下，安德鲁开始了艰苦的训练，他牺牲了自己的个人生活，全身心地投入到音乐中。</p>
+                    <p>随着训练的深入，安德鲁和弗莱彻之间的关系变得越来越紧张，安德鲁的心理和身体都承受着巨大的压力。最终，安德鲁在一场重要的音乐比赛中展现了自己的才华，证明了自己的实力。</p>
+                    <p>电影通过安德鲁的故事，探讨了天才与努力、压力与成长的主题，是一部充满激情和张力的音乐电影。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 视频图片模块 -->
+        <div class="content-section">
+            <h2 class="section-title">视频与图片</h2>
+            <div class="media-grid">
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Miles%20Teller%20as%20Andrew%20in%20Whiplash&image_size=landscape_16_9" alt="剧照1">
+                    <div class="media-overlay">剧照 1</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=J.K.%20Simmons%20as%20Fletcher%20in%20Whiplash&image_size=landscape_16_9" alt="剧照2">
+                    <div class="media-overlay">剧照 2</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Whiplash%20drumming%20scene&image_size=landscape_16_9" alt="剧照3">
+                    <div class="media-overlay">剧照 3</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Whiplash%20classroom%20scene&image_size=landscape_16_9" alt="剧照4">
+                    <div class="media-overlay">剧照 4</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Whiplash%20performance%20scene&image_size=landscape_16_9" alt="剧照5">
+                    <div class="media-overlay">剧照 5</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Whiplash%20final%20scene&image_size=landscape_16_9" alt="剧照6">
+                    <div class="media-overlay">剧照 6</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 讨论区模块 -->
+        <div class="content-section">
+            <h2 class="section-title">讨论区</h2>
+            <div class="discussion-section">
+                <!-- 评论表单 -->
+                <div class="comment-form">
+                    <div class="comment-avatar">U</div>
+                    <div class="comment-input-area">
+                        <textarea class="comment-input" placeholder="写下你的评论..."></textarea>
+                        <div class="comment-actions">
+                            <button class="cancel-btn">取消</button>
+                            <button class="comment-btn">发表评论</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 评论列表 -->
+                <div class="comments-list">
+                    <div class="comment-item">
+                        <div class="comment-avatar">A</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">音乐迷</span>
+                                <span class="comment-time">2014-10-11 15:45</span>
+                            </div>
+                            <div class="comment-text">
+                                爆裂鼓手是一部非常精彩的音乐电影，电影的节奏非常紧凑，充满了张力。迈尔斯·特勒的表演非常出色，他成功地塑造了安德鲁这个角色。J·K·西蒙斯的表演更是精彩，他将弗莱彻这个严格的老师演绎得非常到位，让人又爱又恨。电影的音乐也非常出色，特别是鼓手的表演，让人印象深刻。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 489</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-item">
+                        <div class="comment-avatar">B</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">电影爱好者</span>
+                                <span class="comment-time">2014-10-13 10:30</span>
+                            </div>
+                            <div class="comment-text">
+                                这部电影的制作非常精良，导演达米恩·查泽雷的手法非常出色，他通过紧凑的剪辑和精彩的叙事，创造了一部充满激情的电影。迈尔斯·特勒和J·K·西蒙斯的表演都非常出色，他们之间的对手戏非常精彩。电影的主题也非常深刻，它探讨了天才与努力、压力与成长的关系，让人深思。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 456</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-item">
+                        <div class="comment-avatar">C</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">影评人</span>
+                                <span class="comment-time">2014-10-17 14:20</span>
+                            </div>
+                            <div class="comment-text">
+                                爆裂鼓手是达米恩·查泽雷的代表作，它获得了多项奥斯卡提名，并赢得了最佳男配角等多项大奖。J·K·西蒙斯的表演是电影的亮点，他凭借这个角色获得了奥斯卡最佳男配角奖。电影的节奏非常快，情节紧凑，让人看得非常过瘾。电影的音乐也非常出色，为电影增添了很多氛围。这是一部关于音乐、梦想和成长的电影，值得每一个人观看。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 478</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

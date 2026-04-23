@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三块广告牌 - 电影详情 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+        
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* 主体内容区 */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+        
+        /* 电影详情容器 */
+        .movie-detail-container {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        /* 电影海报 */
+        .movie-poster {
+            flex: 0 0 300px;
+            height: 450px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.3);
+        }
+        
+        /* 电影信息 */
+        .movie-info {
+            flex: 1;
+        }
+        
+        .movie-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ffaa;
+        }
+        
+        .movie-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meta-label {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+        
+        .meta-value {
+            font-size: 16px;
+            color: #fff;
+        }
+        
+        /* 电影简介 */
+        .movie-synopsis {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ffaa;
+        }
+        
+        .synopsis-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+        
+        /* 图片展示 */
+        .movie-photos {
+            margin-bottom: 50px;
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .photo-item {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 讨论区 */
+        .movie-discussion {
+            margin-bottom: 50px;
+        }
+        
+        .comment-form {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00ffaa;
+            border-radius: 5px;
+            color: #fff;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .submit-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .comments-section {
+            margin-top: 30px;
+        }
+        
+        .comment-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .commenter-name {
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .comment-date {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .comment-content {
+            line-height: 1.5;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+        </div>
+    </nav>
+    
+    <!-- 主体内容区 -->
+    <div class="main-content">
+        <a href="template2.html?page=5" class="back-btn">← 返回列表</a>
+        
+        <!-- 电影详情 -->
+        <div class="movie-detail-container">
+            <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Three%20Billboards%20Outside%20Ebbing%2C%20Missouri%2C%20drama%2C%20crime%2C%20red%20billboards&image_size=portrait_4_3');"></div>
+            <div class="movie-info">
+                <h1 class="movie-title">三块广告牌</h1>
+                <div class="movie-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">年份</span>
+                        <span class="meta-value">2017</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">导演</span>
+                        <span class="meta-value">马丁·麦克唐纳</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">编剧</span>
+                        <span class="meta-value">马丁·麦克唐纳</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">主演</span>
+                        <span class="meta-value">弗兰西斯·麦克多蒙德, 伍迪·哈里森, 山姆·洛克威尔</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">制片国家/地区</span>
+                        <span class="meta-value">美国, 英国</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">语言</span>
+                        <span class="meta-value">英语</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">上映日期</span>
+                        <span class="meta-value">2017-11-10</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">片长</span>
+                        <span class="meta-value">115分钟</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">又名</span>
+                        <span class="meta-value">广告牌杀人事件, 三块广告牌：密苏里州埃宾的真实故事</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 电影简介 -->
+        <div class="movie-synopsis">
+            <h2 class="section-title">剧情简介</h2>
+            <p class="synopsis-text">
+                故事发生在密苏里州的一个小镇上，米尔德丽德·海耶斯（弗兰西斯·麦克多蒙德饰）的女儿被奸杀，案件迟迟未破。为了引起警方的注意，她在小镇边缘的道路上租下了三块广告牌，上面写着："强奸致死"、"警方怎么还没抓到凶手？"、"威洛比警长，你在干什么？"。这一举动引起了当地警方和居民的不满，尤其是威洛比警长（伍迪·哈里森饰）和他的副手迪克森（山姆·洛克威尔饰）。随着事件的发展，米尔德丽德与警方之间的冲突不断升级，同时也揭示了小镇居民的复杂性和人性的多面性。
+            </p>
+        </div>
+        
+        <!-- 图片展示 -->
+        <div class="movie-photos">
+            <h2 class="section-title">剧照</h2>
+            <div class="photo-grid">
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20red%20billboards%2C%20roadside&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20woman%20confronting%20police&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20police%20station%2C%20conflict&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20small%20town%20atmosphere&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20emotional%20moment%2C%20grief&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20climax%20scene%2C%20resolution&image_size=landscape_4_3');"></div>
+            </div>
+        </div>
+        
+        <!-- 讨论区 -->
+        <div class="movie-discussion">
+            <h2 class="section-title">讨论区</h2>
+            <div class="comment-form">
+                <div class="form-group">
+                    <label class="form-label" for="name">用户名</label>
+                    <input type="text" id="name" class="form-input" placeholder="请输入用户名">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="comment">评论内容</label>
+                    <textarea id="comment" class="form-textarea" placeholder="请输入评论内容"></textarea>
+                </div>
+                <button class="submit-btn">提交评论</button>
+            </div>
+            <div class="comments-section">
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">剧情片爱好者</span>
+                        <span class="comment-date">2024-01-15</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影的剧情非常紧凑，人物刻画也很深刻。弗兰西斯·麦克多蒙德的表演非常出色，她把米尔德丽德的愤怒和悲伤演绎得淋漓尽致。电影的主题涉及正义、复仇和救赎，让人深思。山姆·洛克威尔的表演也很精彩，他饰演的迪克森从一个种族主义警察转变为一个有良知的人，这个角色的发展非常动人。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">电影评论家</span>
+                        <span class="comment-date">2024-01-10</span>
+                    </div>
+                    <div class="comment-content">
+                        马丁·麦克唐纳的导演风格非常独特，他将黑色幽默与深刻的社会议题相结合，创造了一部既有娱乐性又有深度的电影。电影的节奏把握得很好，叙事流畅，情感真挚。弗兰西斯·麦克多蒙德凭借这部电影获得了奥斯卡最佳女主角，实至名归。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">社会关注者</span>
+                        <span class="comment-date">2024-01-05</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影探讨了很多社会问题，如警方的不作为、种族主义、家庭暴力等。电影没有给出简单的答案，而是展现了人性的复杂性。米尔德丽德的行为虽然极端，但她的愤怒和痛苦是可以理解的。电影的结尾也很开放，留给观众思考的空间。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
