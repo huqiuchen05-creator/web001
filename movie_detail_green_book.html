@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绿皮书 - 影视详情 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+        
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* 主体内容区 */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #00ffaa;
+        }
+        
+        /* 电影详情容器 */
+        .movie-detail-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        /* 电影海报区域 */
+        .movie-poster-section {
+            position: relative;
+        }
+        
+        .movie-poster {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.3);
+        }
+        
+        .movie-rating {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #00ffaa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        /* 电影信息区域 */
+        .movie-info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .movie-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .movie-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .meta-label {
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .meta-value {
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .movie-genres {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .genre-tag {
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+        
+        .movie-synopsis {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+        
+        .synopsis-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ffaa;
+            margin-bottom: 10px;
+        }
+        
+        /* 内容模块 */
+        .content-section {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ffaa;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: rgba(0, 255, 170, 0.3);
+        }
+        
+        /* 视频图片模块 */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .media-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .media-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .media-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .media-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 10px;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        /* 讨论区模块 */
+        .discussion-section {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+        }
+        
+        .comment-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .comment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ffaa;
+            font-weight: bold;
+        }
+        
+        .comment-input-area {
+            flex: 1;
+        }
+        
+        .comment-input {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 170, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            color: #fff;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .comment-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .comment-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .cancel-btn {
+            background-color: transparent;
+            color: #aaa;
+            border: 1px solid #aaa;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .comment-item {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .comment-time {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .comment-text {
+            line-height: 1.5;
+        }
+        
+        .comment-reactions {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .reaction-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .reaction-btn:hover {
+            color: #00ffaa;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+        </div>
+    </nav>
+    
+    <!-- 主体内容区 -->
+    <div class="main-content">
+        <a href="template2.html" class="back-btn">← 返回列表</a>
+        
+        <h1 class="page-title">绿皮书</h1>
+        
+        <!-- 电影详情容器 -->
+        <div class="movie-detail-container">
+            <!-- 电影海报区域 -->
+            <div class="movie-poster-section">
+                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Green%20Book%2C%20drama%2C%20friendship&image_size=portrait_4_3" alt="绿皮书" class="movie-poster">
+                <div class="movie-rating">8.9</div>
+            </div>
+            
+            <!-- 电影信息区域 -->
+            <div class="movie-info-section">
+                <h2 class="movie-title">绿皮书</h2>
+                
+                <div class="movie-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">年份：</span>
+                        <span class="meta-value">2018</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">导演：</span>
+                        <span class="meta-value">彼得·法拉利</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">编剧：</span>
+                        <span class="meta-value">尼克·瓦莱隆加、布莱恩·库瑞、彼得·法拉利</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">主演：</span>
+                        <span class="meta-value">维果·莫滕森、马赫沙拉·阿里、琳达·卡德里尼</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">国家/地区：</span>
+                        <span class="meta-value">美国</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">语言：</span>
+                        <span class="meta-value">英语</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">上映日期：</span>
+                        <span class="meta-value">2018-11-21</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">片长：</span>
+                        <span class="meta-value">130分钟</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">又名：</span>
+                        <span class="meta-value">绿簿旅友、绿书司机</span>
+                    </div>
+                </div>
+                
+                <div class="movie-genres">
+                    <span class="genre-tag">友情</span>
+                    <span class="genre-tag">剧情</span>
+                    <span class="genre-tag">传记</span>
+                </div>
+                
+                <div class="movie-synopsis">
+                    <div class="synopsis-title">剧情简介</div>
+                    <p>《绿皮书》根据真实事件改编，讲述了一段跨越种族和阶级的友谊。托尼·利普是一位意大利裔美国保镖，他接受了一份工作，为著名的非裔美国钢琴家唐·雪莉开车，护送他进行为期两个月的南方巡演。</p>
+                    <p>在20世纪60年代的美国南方，种族歧视仍然非常严重。唐·雪莉虽然是一位备受尊敬的音乐家，但作为一名黑人，他在南方的巡演中面临着诸多困难和歧视。托尼·利普则是一个粗枝大叶的白人，他对黑人也有一些偏见。</p>
+                    <p>在巡演的过程中，两人之间发生了许多冲突和误解，但随着时间的推移，他们逐渐了解了彼此，建立了深厚的友谊。托尼·利普开始认识到种族歧视的荒谬，而唐·雪莉也学会了更加理解和包容不同背景的人。</p>
+                    <p>电影通过这段特殊的友谊，探讨了种族歧视、人性和友谊的主题，是一部充满温情和力量的电影。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 视频图片模块 -->
+        <div class="content-section">
+            <h2 class="section-title">视频与图片</h2>
+            <div class="media-grid">
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Viggo%20Mortensen%20and%20Mahershala%20Ali%20in%20Green%20Book&image_size=landscape_16_9" alt="剧照1">
+                    <div class="media-overlay">剧照 1</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Green%20Book%20car%20scene&image_size=landscape_16_9" alt="剧照2">
+                    <div class="media-overlay">剧照 2</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Don%20Shirley%20playing%20piano%20in%20Green%20Book&image_size=landscape_16_9" alt="剧照3">
+                    <div class="media-overlay">剧照 3</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Green%20Book%20diner%20scene&image_size=landscape_16_9" alt="剧照4">
+                    <div class="media-overlay">剧照 4</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Green%20Book%20hotel%20scene&image_size=landscape_16_9" alt="剧照5">
+                    <div class="media-overlay">剧照 5</div>
+                </div>
+                <div class="media-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Green%20Book%20final%20scene&image_size=landscape_16_9" alt="剧照6">
+                    <div class="media-overlay">剧照 6</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 讨论区模块 -->
+        <div class="content-section">
+            <h2 class="section-title">讨论区</h2>
+            <div class="discussion-section">
+                <!-- 评论表单 -->
+                <div class="comment-form">
+                    <div class="comment-avatar">U</div>
+                    <div class="comment-input-area">
+                        <textarea class="comment-input" placeholder="写下你的评论..."></textarea>
+                        <div class="comment-actions">
+                            <button class="cancel-btn">取消</button>
+                            <button class="comment-btn">发表评论</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 评论列表 -->
+                <div class="comments-list">
+                    <div class="comment-item">
+                        <div class="comment-avatar">A</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">影迷A</span>
+                                <span class="comment-time">2018-11-22 14:30</span>
+                            </div>
+                            <div class="comment-text">
+                                绿皮书是一部非常感人的电影，维果·莫滕森和马赫沙拉·阿里的表演非常出色，他们成功地演绎了一段跨越种族和阶级的友谊。电影的剧情非常紧凑，情节跌宕起伏，让人看得非常过瘾。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 215</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-item">
+                        <div class="comment-avatar">B</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">影迷B</span>
+                                <span class="comment-time">2018-11-24 09:15</span>
+                            </div>
+                            <div class="comment-text">
+                                电影的主题非常深刻，它探讨了种族歧视、人性和友谊的主题。电影通过托尼·利普和唐·雪莉的故事，告诉我们无论肤色和背景如何，人类的情感和友谊是相通的。电影的音乐也非常出色，为电影增添了很多氛围。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 198</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-item">
+                        <div class="comment-avatar">C</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">影评人</span>
+                                <span class="comment-time">2018-11-28 16:45</span>
+                            </div>
+                            <div class="comment-text">
+                                绿皮书是一部非常成功的电影，它获得了奥斯卡最佳影片等多项大奖，实至名归。电影的导演彼得·法拉利做得非常出色，他成功地将一个真实故事改编成了一部感人至深的电影。维果·莫滕森和马赫沙拉·阿里的表演是电影的亮点，他们的化学反应非常强烈。这是一部值得推荐的电影，适合所有年龄段的观众。
+                            </div>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 224</button>
+                                <button class="reaction-btn">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

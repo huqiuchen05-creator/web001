@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水形物语 - 电影详情 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #00ffaa;
+        }
+        
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+        
+        .logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .register-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 主体内容区 */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+        
+        /* 电影详情容器 */
+        .movie-detail-container {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        /* 电影海报 */
+        .movie-poster {
+            flex: 0 0 300px;
+            height: 450px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.3);
+        }
+        
+        /* 电影信息 */
+        .movie-info {
+            flex: 1;
+        }
+        
+        .movie-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ffaa;
+        }
+        
+        .movie-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meta-label {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+        
+        .meta-value {
+            font-size: 16px;
+            color: #fff;
+        }
+        
+        /* 电影简介 */
+        .movie-synopsis {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00ffaa;
+        }
+        
+        .synopsis-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+        
+        /* 图片展示 */
+        .movie-photos {
+            margin-bottom: 50px;
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .photo-item {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 讨论区 */
+        .movie-discussion {
+            margin-bottom: 50px;
+        }
+        
+        .comment-form {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00ffaa;
+            border-radius: 5px;
+            color: #fff;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .submit-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .comments-section {
+            margin-top: 30px;
+        }
+        
+        .comment-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .commenter-name {
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .comment-date {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .comment-content {
+            line-height: 1.5;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+        </div>
+    </nav>
+    
+    <!-- 主体内容区 -->
+    <div class="main-content">
+        <a href="template2.html?page=5" class="back-btn">← 返回列表</a>
+        
+        <!-- 电影详情 -->
+        <div class="movie-detail-container">
+            <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Shape%20of%20Water%2C%20fantasy%2C%20romance%2C%20aquatic%20creature&image_size=portrait_4_3');"></div>
+            <div class="movie-info">
+                <h1 class="movie-title">水形物语</h1>
+                <div class="movie-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">年份</span>
+                        <span class="meta-value">2017</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">导演</span>
+                        <span class="meta-value">吉尔莫·德尔·托罗</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">编剧</span>
+                        <span class="meta-value">吉尔莫·德尔·托罗, 瓦内莎·泰勒</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">主演</span>
+                        <span class="meta-value">莎莉·霍金斯, 道格·琼斯, 迈克尔·珊农</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">制片国家/地区</span>
+                        <span class="meta-value">美国, 墨西哥</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">语言</span>
+                        <span class="meta-value">英语, 美国手语, 俄语</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">上映日期</span>
+                        <span class="meta-value">2017-12-01</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">片长</span>
+                        <span class="meta-value">123分钟</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">又名</span>
+                        <span class="meta-value">忘形水, 水形奇缘</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 电影简介 -->
+        <div class="movie-synopsis">
+            <h2 class="section-title">剧情简介</h2>
+            <p class="synopsis-text">
+                故事发生在1962年的美国冷战时期，艾丽莎（莎莉·霍金斯饰）是一位失聪的清洁女工，在一个高度机密的政府实验室工作。一天，实验室迎来了一个神秘的水生人形生物（道格·琼斯饰），它是从南美洲的河流中捕获的。艾丽莎对这个生物产生了兴趣，并逐渐与它建立了联系。随着时间的推移，两人之间发展出了一种特殊的感情。当艾丽莎发现实验室计划杀死这个生物时，她决定与她的朋友泽尔达（奥克塔维亚·斯宾瑟饰）和吉尔斯（理查德·詹金斯饰）一起，策划将这个生物从实验室中解救出来。
+            </p>
+        </div>
+        
+        <!-- 图片展示 -->
+        <div class="movie-photos">
+            <h2 class="section-title">剧照</h2>
+            <div class="photo-grid">
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Shape%20of%20Water%20movie%20scene%2C%20woman%20and%20aquatic%20creature%2C%20romantic%20moment&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Shape%20of%20Water%20movie%20scene%2C%20laboratory%20setting%2C%20sci-fi%20atmosphere&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Shape%20of%20Water%20movie%20scene%2C%20bathroom%20scene%2C%20water%20filled&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Shape%20of%20Water%20movie%20scene%2C%20villain%20character%2C%20threatening%20mood&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Shape%20of%20Water%20movie%20scene%2C%20friendship%20moment%2C%20supportive%20characters&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Shape%20of%20Water%20movie%20scene%2C%20climax%20scene%2C%20escape%20plan&image_size=landscape_4_3');"></div>
+            </div>
+        </div>
+        
+        <!-- 讨论区 -->
+        <div class="movie-discussion">
+            <h2 class="section-title">讨论区</h2>
+            <div class="comment-form">
+                <div class="form-group">
+                    <label class="form-label" for="name">用户名</label>
+                    <input type="text" id="name" class="form-input" placeholder="请输入用户名">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="comment">评论内容</label>
+                    <textarea id="comment" class="form-textarea" placeholder="请输入评论内容"></textarea>
+                </div>
+                <button class="submit-btn">提交评论</button>
+            </div>
+            <div class="comments-section">
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">奇幻电影爱好者</span>
+                        <span class="comment-date">2024-01-15</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影太美了！吉尔莫·德尔·托罗的想象力真的很丰富，他创造了一个充满奇幻色彩的世界。莎莉·霍金斯的表演非常出色，她通过肢体语言和表情传达了艾丽莎的情感，让人感同身受。道格·琼斯的表演也很精彩，他把水生生物的动作和表情演绎得非常逼真。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">浪漫故事爱好者</span>
+                        <span class="comment-date">2024-01-10</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影的爱情故事非常独特，跨越了物种的界限，展现了爱的纯粹和力量。艾丽莎和水生生物之间的感情发展很自然，让人相信真爱的存在。电影的画面非常美丽，色彩运用很到位，音乐也很动人，增强了电影的情感表达。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="commenter-name">电影评论家</span>
+                        <span class="comment-date">2024-01-05</span>
+                    </div>
+                    <div class="comment-content">
+                        这部电影获得了奥斯卡最佳影片，实至名归。吉尔莫·德尔·托罗的导演风格非常独特，他将奇幻元素与现实社会问题相结合，创造了一个既有娱乐性又有深度的故事。电影的主题涉及爱、包容、歧视等社会议题，让人深思。莎莉·霍金斯的表演非常出色，她凭借这部电影获得了奥斯卡最佳女主角提名。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

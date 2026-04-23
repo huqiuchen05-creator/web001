@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>犯罪电影 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+        
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* 主体内容区 */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #00ffaa;
+        }
+        
+        /* 筛选栏 */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background-color: #00ffaa;
+            color: #000;
+            font-weight: bold;
+        }
+        
+        /* 电影网格 */
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .movie-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 170, 0.2);
+        }
+        
+        .movie-poster {
+            width: 100%;
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .movie-rating {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #00ffaa;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .movie-info {
+            padding: 15px;
+        }
+        
+        .movie-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .movie-year {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        
+        .movie-genres {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .genre-tag {
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        
+        /* 分页 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+        
+        .page-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .page-btn.active {
+            background-color: #00ffaa;
+            color: #000;
+            font-weight: bold;
+        }
+        
+        .page-btn:hover:not(.active) {
+            background-color: rgba(0, 255, 170, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="#" class="nav-link">声明</a>
+            <a href="#" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+        </div>
+    </nav>
+    
+    <!-- 主体内容区 -->
+    <div class="main-content">
+        <h1 class="page-title">犯罪电影</h1>
+        
+        <!-- 筛选栏 -->
+        <div class="filter-bar">
+            <button class="filter-btn" onclick="window.location.href='template2.html'">全部</button>
+            <button class="filter-btn" onclick="window.location.href='template2_action.html'">动作</button>
+            <button class="filter-btn" onclick="window.location.href='template2_scifi.html'">科幻</button>
+            <button class="filter-btn" onclick="window.location.href='template2_drama.html'">剧情</button>
+            <button class="filter-btn" onclick="window.location.href='template2_comedy.html'">喜剧</button>
+            <button class="filter-btn active" onclick="window.location.href='template2_crime.html'">犯罪</button>
+            <button class="filter-btn" onclick="window.location.href='template2_thriller.html'">惊悚</button>
+            <button class="filter-btn" onclick="window.location.href='template2_mystery.html'">悬疑</button>
+            <button class="filter-btn" onclick="window.location.href='template2_disaster.html'">灾难</button>
+            <button class="filter-btn" onclick="window.location.href='template2_romance.html'">爱情</button>
+            <button class="filter-btn" onclick="window.location.href='template2_friendship.html'">友情</button>
+            <button class="filter-btn" onclick="window.location.href='template2_youth.html'">青春</button>
+        </div>
+        
+        <!-- 电影网格 -->
+        <div class="movie-grid">
+            <!-- 电影卡片 1 -->
+            <div class="movie-card">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Godfather%2C%20mafia%20theme%2C%20dark%20mood&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.6</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">教父1</h3>
+                    <p class="movie-year">1972</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 电影卡片 2 -->
+            <div class="movie-card">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20thriller%20film%2C%20suspenseful%20scene%2C%20dark%20mood&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.8</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">七宗罪</h3>
+                    <p class="movie-year">1995</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">惊悚</span>
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">悬疑</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 电影卡片 3 -->
+            <div class="movie-card">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Green%20Mile%2C%20prison%20setting%2C%20mystical%20elements&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.1</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">绿里奇迹</h3>
+                    <p class="movie-year">1999</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">犯罪</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 电影卡片 4 -->
+            <div class="movie-card">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20action%20film%2C%20dynamic%20scene%2C%20dark%20tone&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.2</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">速度与激情10</h3>
+                    <p class="movie-year">2023</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">动作</span>
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">冒险</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 电影卡片 5 -->
+            <div class="movie-card">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20drama%20film%2C%20emotional%20scene%2C%20warm%20lighting&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.0</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">肖申克的救赎</h3>
+                    <p class="movie-year">1994</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">犯罪</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 电影卡片 6 -->
+            <div class="movie-card">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Goodfellas%2C%20crime%2C%20mafia&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.0</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">好家伙</h3>
+                    <p class="movie-year">1990</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">传记</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 电影卡片 7 -->
+            <div class="movie-card">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Catch%20Me%20If%20You%20Can%2C%20crime%2C%20cat%20and%20mouse&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.8</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">猫鼠游戏</h3>
+                    <p class="movie-year">2002</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">传记</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 电影卡片 8 -->
+            <div class="movie-card">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Departed%2C%20crime%2C%20thriller&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.8</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">无间道风云</h3>
+                    <p class="movie-year">2006</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">犯罪</span>
+                        <span class="genre-tag">惊悚</span>
+                        <span class="genre-tag">剧情</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 电影卡片 9 -->
+            <div class="movie-card">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Dark%20Knight%2C%20superhero%2C%20action&image_size=portrait_4_3');">
+                    <div class="movie-rating">9.4</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">蝙蝠侠：黑暗骑士</h3>
+                    <p class="movie-year">2008</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">动作</span>
+                        <span class="genre-tag">超级英雄</span>
+                        <span class="genre-tag">犯罪</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 电影卡片 10 -->
+            <div class="movie-card">
+                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Joker%2C%20drama%2C%20thriller&image_size=portrait_4_3');">
+                    <div class="movie-rating">8.9</div>
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">小丑</h3>
+                    <p class="movie-year">2019</p>
+                    <div class="movie-genres">
+                        <span class="genre-tag">剧情</span>
+                        <span class="genre-tag">惊悚</span>
+                        <span class="genre-tag">犯罪</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn">上一页</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">下一页</button>
+        </div>
+    </div>
+</body>
+</html>
