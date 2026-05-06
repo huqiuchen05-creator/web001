@@ -385,6 +385,39 @@
             background-color: #00ffaa;
             color: #000;
         }
+        
+        /* 收藏按钮 */
+        .favorite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .favorite-btn.favorited {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        .movie-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -413,7 +446,7 @@
         <div class="movie-detail-container">
             <!-- 电影海报区域 -->
             <div class="movie-poster-section">
-                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Catch%20Me%20If%20You%20Can%2C%20crime%2C%20biography&image_size=portrait_4_3" alt="猫鼠游戏" class="movie-poster">
+                <img src="C:/Users/19256/Desktop/新建文件夹/猫鼠游戏/海报.webp" alt="猫鼠游戏" class="movie-poster">
                 <div class="movie-rating">9.0</div>
             </div>
             
@@ -474,6 +507,13 @@
                     <p>最终，弗兰克在法国被捕，被判处12年监禁。但由于他的天赋，FBI决定让他在监狱外工作，帮助他们识别和防止金融诈骗。弗兰克后来成为了一名成功的反欺诈顾问，帮助银行和企业设计安全系统。</p>
                     <p>电影通过弗兰克的故事，探讨了家庭、身份和救赎的主题，是一部充满智慧和温情的犯罪传记片。</p>
                 </div>
+                
+                <div class="movie-actions">
+                    <button class="favorite-btn" onclick="toggleFavorite()">
+                        <span class="favorite-icon">⭐</span>
+                        <span class="favorite-text">加入收藏</span>
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -482,27 +522,27 @@
             <h2 class="section-title">视频与图片</h2>
             <div class="media-grid">
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Leonardo%20DiCaprio%20as%20Frank%20Abagnale%20Jr&image_size=landscape_16_9" alt="剧照1">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/猫鼠游戏/剧照1.webp" alt="剧照1">
                     <div class="media-overlay">剧照 1</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Tom%20Hanks%20as%20Carl%20Hanratty&image_size=landscape_16_9" alt="剧照2">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/猫鼠游戏/剧照2.webp" alt="剧照2">
                     <div class="media-overlay">剧照 2</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Catch%20Me%20If%20You%20Can%20airport%20scene&image_size=landscape_16_9" alt="剧照3">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/猫鼠游戏/剧照3.webp" alt="剧照3">
                     <div class="media-overlay">剧照 3</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Catch%20Me%20If%20You%20Can%20hospital%20scene&image_size=landscape_16_9" alt="剧照4">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/猫鼠游戏/剧照4.webp" alt="剧照4">
                     <div class="media-overlay">剧照 4</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Catch%20Me%20If%20You%20Can%20courtroom%20scene&image_size=landscape_16_9" alt="剧照5">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/猫鼠游戏/剧照5.webp" alt="剧照5">
                     <div class="media-overlay">剧照 5</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Catch%20Me%20If%20You%20Can%20final%20scene&image_size=landscape_16_9" alt="剧照6">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/猫鼠游戏/剧照6.webp" alt="剧照6">
                     <div class="media-overlay">剧照 6</div>
                 </div>
             </div>
@@ -580,5 +620,46 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        const MOVIE_ID = 'catch_me';
+        let isFavorited = false;
+        
+        function initFavorite() {
+            const saved = localStorage.getItem('favorite_' + MOVIE_ID);
+            isFavorited = saved === 'true';
+            
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+            }
+        }
+        
+        function toggleFavorite() {
+            isFavorited = !isFavorited;
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            localStorage.setItem('favorite_' + MOVIE_ID, isFavorited);
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+                alert('已添加到收藏！');
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+                alert('已取消收藏');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initFavorite);
+    </script>
 </body>
 </html>

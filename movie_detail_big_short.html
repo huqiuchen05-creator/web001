@@ -94,6 +94,38 @@
             transform: translateX(-5px);
         }
 
+        .favorite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .favorite-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        .favorite-btn.favorited {
+            background-color: #00ffaa;
+            color: #000;
+        }
+
+        .movie-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
         .main-content {
             margin-top: 80px;
             padding: 40px 50px;
@@ -283,7 +315,7 @@
         <a href="template2.html?page=4" class="back-btn">← 返回列表</a>
 
         <div class="movie-detail-container">
-            <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Witness%20for%20the%20Prosecution%2C%201957%20classic%20film%20noir%2C%20courtroom%20drama&image_size=portrait_4_3');"></div>
+            <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/控方证人/海报.webp');"></div>
             <div class="movie-info">
                 <h1 class="movie-title">控方证人</h1>
                 <div class="movie-meta">
@@ -328,17 +360,24 @@
             <p class="synopsis-text">
                 《控方证人》是Billy Wilder执导的经典法庭悬疑片，改编自阿加莎·克里斯蒂的同名戏剧。伦敦著名辩护律师罗巴茨爵士（Charles Laughton饰）为了一起谋杀案的被告——年轻男子莱昂纳德（TYRONE POWER饰）辩护。莱昂纳德被控谋杀了富婆艾米莉（Norma Vashi饰）。然而，案件的关键证人却是莱昂纳德的妻子克里斯汀（Marlene Dietrich饰）。她出庭作证，证明丈夫案发当晚不在场。但罗巴茨爵士发现克里斯汀的证词中隐藏着惊人的秘密。随着审判的深入，案件出现了戏剧性的转折，真正的凶手浮出水面。
             </p>
+            
+            <div class="movie-actions">
+                <button class="favorite-btn" onclick="toggleFavorite()">
+                    <span class="favorite-icon">⭐</span>
+                    <span class="favorite-text">加入收藏</span>
+                </button>
+            </div>
         </div>
 
         <div class="movie-photos">
             <h2 class="section-title">剧照</h2>
             <div class="photo-grid">
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20courtroom%20drama%2C%20lawyer&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20testimony%20moment&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20dramatic%20revelation&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20emotional%20confrontation&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20verdict%20moment&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Witness%20for%20the%20Prosecution%20movie%20scene%2C%20final%20twist&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/控方证人/剧照1.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/控方证人/剧照2.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/控方证人/剧照3.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/控方证人/剧照4.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/控方证人/剧照5.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/控方证人/剧照6.webp');"></div>
             </div>
         </div>
 
@@ -386,5 +425,46 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        const MOVIE_ID = 'big_short';
+        let isFavorited = false;
+        
+        function initFavorite() {
+            const saved = localStorage.getItem('favorite_' + MOVIE_ID);
+            isFavorited = saved === 'true';
+            
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+            }
+        }
+        
+        function toggleFavorite() {
+            isFavorited = !isFavorited;
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            localStorage.setItem('favorite_' + MOVIE_ID, isFavorited);
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+                alert('已添加到收藏！');
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+                alert('已取消收藏');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initFavorite);
+    </script>
 </body>
 </html>

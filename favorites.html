@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的收藏 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ffaa;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #00ffaa;
+        }
+
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .register-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 170, 0.5);
+        }
+
+        .user-profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ffaa, #00cc99);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
+        }
+
+        .user-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background-color: rgba(0, 0, 0, 0.95);
+            border: 1px solid #00ffaa;
+            border-radius: 10px;
+            padding: 10px 0;
+            min-width: 180px;
+            box-shadow: 0 5px 20px rgba(0, 255, 170, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .user-profile:hover .user-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .user-menu::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 15px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #00ffaa;
+        }
+
+        .user-menu-item {
+            padding: 12px 20px;
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu-item:hover {
+            background-color: rgba(0, 255, 170, 0.1);
+            color: #00ffaa;
+        }
+
+        .user-menu-item i {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .main-content {
+            padding-top: 120px;
+            padding-bottom: 50px;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #00ffaa;
+            margin-bottom: 40px;
+        }
+
+        .favorites-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .favorite-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .favorite-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .favorite-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.2);
+        }
+
+        .favorite-poster {
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .favorite-rating {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 255, 170, 0.9);
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .favorite-info {
+            padding: 15px;
+        }
+
+        .favorite-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .favorite-year {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .favorite-genres {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .genre-tag {
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        .delete-btn {
+            width: 100%;
+            background-color: rgba(255, 0, 0, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background-color: #ff4444;
+            color: #fff;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .empty-title {
+            font-size: 24px;
+            color: #00ffaa;
+            margin-bottom: 10px;
+        }
+
+        .empty-text {
+            color: #888;
+            font-size: 16px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #00ffaa;
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 20px;
+            }
+
+            .logo-text {
+                font-size: 18px;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .favorite-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .favorite-poster {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cinema%20film%20reel%20logo%2C%20green%20glow&image_size=square" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="history.html" class="nav-link">历史记录</a>
+            <a href="favorites.html" class="nav-link" style="color: #00ffaa;">我的收藏</a>
+            <a href="account.html" class="nav-link">账号信息</a>
+            <button class="register-btn" onclick="showRegisterModal()">注册</button>
+            <div class="user-profile">
+                <div class="user-avatar">U</div>
+                <div class="user-menu">
+                    <a href="history.html" class="user-menu-item"><i>📋</i> 历史记录</a>
+                    <a href="favorites.html" class="user-menu-item"><i>⭐</i> 我的收藏</a>
+                    <a href="account.html" class="user-menu-item"><i>👤</i> 账号信息</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <h1 class="page-title">⭐ 我的收藏</h1>
+
+        <div class="favorites-container" id="favoritesContainer">
+            <div class="empty-state" id="emptyState">
+                <div class="empty-icon">📭</div>
+                <h2 class="empty-title">暂无收藏</h2>
+                <p class="empty-text">快去栏目页收藏你喜欢的电影吧！</p>
+                <a href="template2.html" class="back-btn">去看看</a>
+            </div>
+
+            <div class="favorite-grid" id="favoriteGrid" style="display: none;">
+            </div>
+        </div>
+    </div>
+
+    <script src="movies_data.js"></script>
+    <script>
+        function loadFavorites() {
+            const favorites = getFavoriteMovies();
+            const emptyState = document.getElementById('emptyState');
+            const favoriteGrid = document.getElementById('favoriteGrid');
+
+            if (favorites.length === 0) {
+                emptyState.style.display = 'block';
+                favoriteGrid.style.display = 'none';
+            } else {
+                emptyState.style.display = 'none';
+                favoriteGrid.style.display = 'grid';
+                favoriteGrid.innerHTML = '';
+
+                favorites.forEach(movie => {
+                    const card = document.createElement('div');
+                    card.className = 'favorite-card';
+                    card.onclick = () => goToMovieDetail(movie.id);
+
+                    card.innerHTML = `
+                        <div class="favorite-poster" style="background-image: url('${movie.poster}');">
+                            <div class="favorite-rating">${movie.rating}</div>
+                        </div>
+                        <div class="favorite-info">
+                            <h3 class="favorite-title">${movie.title}</h3>
+                            <p class="favorite-year">${movie.year}</p>
+                            <div class="favorite-genres">
+                                ${movie.genres.map(g => `<span class="genre-tag">${g}</span>`).join('')}
+                            </div>
+                            <button class="delete-btn" onclick="event.stopPropagation(); removeFavorite('${movie.id}');">删除收藏</button>
+                        </div>
+                    `;
+
+                    favoriteGrid.appendChild(card);
+                });
+            }
+        }
+
+        function goToMovieDetail(movieId) {
+            const detailPage = `movie_detail_${movieId}.html`;
+            window.location.href = detailPage;
+        }
+
+        function removeFavorite(movieId) {
+            localStorage.setItem('favorite_' + movieId, 'false');
+            loadFavorites();
+            alert('已取消收藏！');
+        }
+
+        function showRegisterModal() {
+            alert('注册功能开发中...');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadFavorites);
+    </script>
+</body>
+</html>

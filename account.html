@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>账号信息 - 洞悉影视</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #00ffaa;
+        }
+        
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
+        }
+        
+        .logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .register-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .register-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* 用户头像和下拉菜单 */
+        .user-profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ffaa, #00cc99);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
+        }
+
+        .user-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background-color: rgba(0, 0, 0, 0.95);
+            border: 1px solid #00ffaa;
+            border-radius: 10px;
+            padding: 10px 0;
+            min-width: 180px;
+            box-shadow: 0 5px 20px rgba(0, 255, 170, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .user-profile:hover .user-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .user-menu::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 15px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #00ffaa;
+        }
+
+        .user-menu-item {
+            padding: 12px 20px;
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu-item:hover {
+            background-color: rgba(0, 255, 170, 0.1);
+            color: #00ffaa;
+        }
+
+        .user-menu-item i {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        /* 主体内容区 */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
+        }
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #00ffaa;
+        }
+        
+        /* 账号信息内容 */
+        .account-content {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+        }
+        
+        /* 未注册状态 */
+        .unregistered-state {
+            text-align: center;
+            padding: 100px 0;
+        }
+        
+        .unregistered-icon {
+            font-size: 80px;
+            color: #00ffaa;
+            margin-bottom: 30px;
+        }
+        
+        .unregistered-text {
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        
+        .unregistered-hint {
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 40px;
+        }
+        
+        .register-now-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .register-now-btn:hover {
+            background-color: #00e699;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 170, 0.4);
+        }
+        
+        /* 已注册状态 */
+        .registered-state {
+            display: none;
+        }
+        
+        .account-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 255, 170, 0.2);
+        }
+        
+        .account-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ffaa, #00cc99);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 48px;
+        }
+        
+        .account-info {
+            flex: 1;
+        }
+        
+        .account-username {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .account-email {
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        
+        .account-stats {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        .account-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .detail-section {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ffaa;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 255, 170, 0.1);
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .detail-value {
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .edit-btn {
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        /* 注册模态框 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .register-modal {
+            background-color: #111;
+            border: 1px solid #00ffaa;
+            border-radius: 15px;
+            width: 450px;
+            max-width: 90%;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 255, 170, 0.3);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 28px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: #00ffaa;
+        }
+        
+        .modal-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffaa;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-label {
+            color: #00ffaa;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .form-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 170, 0.3);
+            border-radius: 8px;
+            padding: 14px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #00ffaa;
+            box-shadow: 0 0 0 3px rgba(0, 255, 170, 0.2);
+        }
+        
+        .form-input::placeholder {
+            color: #666;
+        }
+        
+        .password-wrapper {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .password-toggle:hover {
+            color: #00ffaa;
+        }
+        
+        .verify-code {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .verify-code input {
+            flex: 1;
+        }
+        
+        .verify-btn {
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        
+        .verify-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        .verify-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .agreement {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            color: #aaa;
+        }
+        
+        .agreement input[type="checkbox"] {
+            margin-top: 3px;
+            accent-color: #00ffaa;
+        }
+        
+        .agreement a {
+            color: #00ffaa;
+            text-decoration: none;
+        }
+        
+        .agreement a:hover {
+            text-decoration: underline;
+        }
+        
+        .submit-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #00e699;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 170, 0.4);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .login-link a {
+            color: #00ffaa;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        .success-icon {
+            font-size: 60px;
+            color: #00ffaa;
+            margin-bottom: 20px;
+        }
+        
+        .success-text {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .success-hint {
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <span class="logo-text">洞悉影视</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="template2.html" class="nav-link">栏目</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
+            <button class="register-btn">注册</button>
+            <div class="user-profile">
+                <div class="user-avatar">U</div>
+                <div class="user-menu">
+                    <a href="history.html" class="user-menu-item"><i>📋</i> 历史记录</a>
+                    <a href="favorites.html" class="user-menu-item"><i>⭐</i> 我的收藏</a>
+                    <a href="account.html" class="user-menu-item"><i>👤</i> 账号信息</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 主体内容区 -->
+    <div class="main-content">
+        <h1 class="page-title">账号信息</h1>
+        
+        <div class="account-content">
+            <!-- 未注册状态 -->
+            <div class="unregistered-state" id="unregisteredState">
+                <div class="unregistered-icon">🔒</div>
+                <h2 class="unregistered-text">您未注册账号</h2>
+                <p class="unregistered-hint">注册账号后可以查看和管理您的个人信息、观看历史和收藏</p>
+                <button class="register-now-btn" id="registerNowBtn">立即注册</button>
+            </div>
+            
+            <!-- 已注册状态 -->
+            <div class="registered-state" id="registeredState">
+                <div class="account-header">
+                    <div class="account-avatar">U</div>
+                    <div class="account-info">
+                        <h2 class="account-username">用户名</h2>
+                        <p class="account-email">user@example.com</p>
+                        <div class="account-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">观看历史</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">8</div>
+                                <div class="stat-label">我的收藏</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">评论数</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="account-details">
+                    <div class="detail-section">
+                        <h3 class="section-title">个人信息</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">用户名</span>
+                            <div class="detail-value">
+                                <span>用户名</span>
+                                <button class="edit-btn">编辑</button>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">邮箱</span>
+                            <div class="detail-value">
+                                <span>user@example.com</span>
+                                <button class="edit-btn">编辑</button>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">密码</span>
+                            <div class="detail-value">
+                                <span>••••••••</span>
+                                <button class="edit-btn">修改</button>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">注册时间</span>
+                            <span class="detail-value">2026-04-21</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3 class="section-title">账号设置</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">通知设置</span>
+                            <button class="edit-btn">管理</button>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">隐私设置</span>
+                            <button class="edit-btn">管理</button>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">账号安全</span>
+                            <button class="edit-btn">管理</button>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">退出登录</span>
+                            <button class="edit-btn">退出</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 注册模态框 -->
+    <div class="modal-overlay">
+        <div class="register-modal">
+            <button class="modal-close">×</button>
+            <h2 class="modal-title">注册账号</h2>
+            <div class="form-content">
+                <form class="modal-form" id="registerForm">
+                    <div class="form-group">
+                        <label class="form-label">用户名</label>
+                        <input type="text" class="form-input" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">邮箱</label>
+                        <input type="email" class="form-input" placeholder="请输入邮箱地址" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">密码</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-input" id="password" placeholder="请输入密码（8-20位）" required>
+                            <button type="button" class="password-toggle">👁️</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">确认密码</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-input" id="confirmPassword" placeholder="请再次输入密码" required>
+                            <button type="button" class="password-toggle">👁️</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">验证码</label>
+                        <div class="verify-code">
+                            <input type="text" class="form-input" placeholder="请输入验证码" required>
+                            <button type="button" class="verify-btn">获取验证码</button>
+                        </div>
+                    </div>
+                    <div class="agreement">
+                        <input type="checkbox" id="agree" required>
+                        <label for="agree">我已阅读并同意<a href="declaration.html">《用户协议》</a>和<a href="declaration.html">《隐私政策》</a></label>
+                    </div>
+                    <button type="submit" class="submit-btn">立即注册</button>
+                </form>
+            </div>
+            <div class="success-message">
+                <div class="success-icon">✓</div>
+                <div class="success-text">注册成功！</div>
+                <div class="success-hint">欢迎加入洞悉影视，开始探索精彩影视世界</div>
+            </div>
+            <div class="login-link">
+                已有账号？<a href="#">立即登录</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 模拟未登录状态
+        const isLoggedIn = false;
+        
+        // 显示对应状态
+        const unregisteredState = document.getElementById('unregisteredState');
+        const registeredState = document.getElementById('registeredState');
+        
+        if (isLoggedIn) {
+            unregisteredState.style.display = 'none';
+            registeredState.style.display = 'block';
+        } else {
+            unregisteredState.style.display = 'block';
+            registeredState.style.display = 'none';
+        }
+        
+        // 注册模态框功能
+        const registerBtn = document.querySelector('.register-btn');
+        const registerNowBtn = document.getElementById('registerNowBtn');
+        const modalOverlay = document.querySelector('.modal-overlay');
+        const modalClose = document.querySelector('.modal-close');
+        const registerForm = document.getElementById('registerForm');
+        const successMessage = document.querySelector('.success-message');
+        const formContent = document.querySelector('.form-content');
+        
+        function openModal() {
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        registerBtn.addEventListener('click', openModal);
+        registerNowBtn.addEventListener('click', openModal);
+        
+        modalClose.addEventListener('click', function() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            resetForm();
+        });
+        
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                resetForm();
+            }
+        });
+        
+        function resetForm() {
+            registerForm.reset();
+            successMessage.classList.remove('show');
+            formContent.style.display = 'block';
+        }
+        
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            formContent.style.display = 'none';
+            successMessage.classList.add('show');
+        });
+        
+        // 密码显示/隐藏切换
+        const passwordToggles = document.querySelectorAll('.password-toggle');
+        passwordToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.textContent = '🙈';
+                } else {
+                    input.type = 'password';
+                    this.textContent = '👁️';
+                }
+            });
+        });
+        
+        // 验证码倒计时
+        const verifyBtn = document.querySelector('.verify-btn');
+        verifyBtn.addEventListener('click', function() {
+            let countdown = 60;
+            this.disabled = true;
+            this.textContent = countdown + '秒后重试';
+            
+            const timer = setInterval(() => {
+                countdown--;
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    this.disabled = false;
+                    this.textContent = '获取验证码';
+                } else {
+                    this.textContent = countdown + '秒后重试';
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

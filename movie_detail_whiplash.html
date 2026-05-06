@@ -385,6 +385,38 @@
             background-color: #00ffaa;
             color: #000;
         }
+        
+        .favorite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .favorite-btn.favorited {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        .movie-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -413,7 +445,7 @@
         <div class="movie-detail-container">
             <!-- 电影海报区域 -->
             <div class="movie-poster-section">
-                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Whiplash%2C%20drama%2C%20music&image_size=portrait_4_3" alt="爆裂鼓手" class="movie-poster">
+                <img src="C:/Users/19256/Desktop/新建文件夹/爆裂鼓手/海报.webp" alt="爆裂鼓手" class="movie-poster">
                 <div class="movie-rating">9.0</div>
             </div>
             
@@ -474,6 +506,13 @@
                     <p>随着训练的深入，安德鲁和弗莱彻之间的关系变得越来越紧张，安德鲁的心理和身体都承受着巨大的压力。最终，安德鲁在一场重要的音乐比赛中展现了自己的才华，证明了自己的实力。</p>
                     <p>电影通过安德鲁的故事，探讨了天才与努力、压力与成长的主题，是一部充满激情和张力的音乐电影。</p>
                 </div>
+                
+                <div class="movie-actions">
+                    <button class="favorite-btn" onclick="toggleFavorite()">
+                        <span class="favorite-icon">⭐</span>
+                        <span class="favorite-text">加入收藏</span>
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -482,27 +521,27 @@
             <h2 class="section-title">视频与图片</h2>
             <div class="media-grid">
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Miles%20Teller%20as%20Andrew%20in%20Whiplash&image_size=landscape_16_9" alt="剧照1">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/爆裂鼓手/剧照1.webp" alt="剧照1">
                     <div class="media-overlay">剧照 1</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=J.K.%20Simmons%20as%20Fletcher%20in%20Whiplash&image_size=landscape_16_9" alt="剧照2">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/爆裂鼓手/剧照2.webp" alt="剧照2">
                     <div class="media-overlay">剧照 2</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Whiplash%20drumming%20scene&image_size=landscape_16_9" alt="剧照3">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/爆裂鼓手/剧照3.webp" alt="剧照3">
                     <div class="media-overlay">剧照 3</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Whiplash%20classroom%20scene&image_size=landscape_16_9" alt="剧照4">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/爆裂鼓手/剧照4.webp" alt="剧照4">
                     <div class="media-overlay">剧照 4</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Whiplash%20performance%20scene&image_size=landscape_16_9" alt="剧照5">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/爆裂鼓手/剧照5.webp" alt="剧照5">
                     <div class="media-overlay">剧照 5</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Whiplash%20final%20scene&image_size=landscape_16_9" alt="剧照6">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/爆裂鼓手/剧照6.webp" alt="剧照6">
                     <div class="media-overlay">剧照 6</div>
                 </div>
             </div>
@@ -580,5 +619,46 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        const MOVIE_ID = 'whiplash';
+        let isFavorited = false;
+        
+        function initFavorite() {
+            const saved = localStorage.getItem('favorite_' + MOVIE_ID);
+            isFavorited = saved === 'true';
+            
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+            }
+        }
+        
+        function toggleFavorite() {
+            isFavorited = !isFavorited;
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            localStorage.setItem('favorite_' + MOVIE_ID, isFavorited);
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+                alert('已添加到收藏！');
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+                alert('已取消收藏');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initFavorite);
+    </script>
 </body>
 </html>

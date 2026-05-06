@@ -385,6 +385,38 @@
             background-color: #00ffaa;
             color: #000;
         }
+        
+        .favorite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .favorite-btn.favorited {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        .movie-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -471,6 +503,13 @@
                     <p>尹天仇是一个热爱表演的小人物，他在片场做临时演员，梦想着有一天能成为真正的演员。尽管他屡遭挫折，但他从未放弃自己的梦想。</p>
                     <p>在一次偶然的机会中，尹天仇遇到了舞女柳飘飘，两人逐渐产生了感情。同时，他也得到了大明星杜鹃儿的赏识，获得了出演男主角的机会。</p>
                     <p>然而，就在尹天仇即将实现梦想的时候，他却因为一些意外而失去了这个机会。但他并没有气馁，而是继续坚持自己的表演梦想，最终在社区中心开设了自己的表演培训班。</p>
+                </div>
+                
+                <div class="movie-actions">
+                    <button class="favorite-btn" onclick="toggleFavorite()">
+                        <span class="favorite-icon">⭐</span>
+                        <span class="favorite-text">加入收藏</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -578,5 +617,46 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        const MOVIE_ID = 'comedy_king';
+        let isFavorited = false;
+        
+        function initFavorite() {
+            const saved = localStorage.getItem('favorite_' + MOVIE_ID);
+            isFavorited = saved === 'true';
+            
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+            }
+        }
+        
+        function toggleFavorite() {
+            isFavorited = !isFavorited;
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            localStorage.setItem('favorite_' + MOVIE_ID, isFavorited);
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+                alert('已添加到收藏！');
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+                alert('已取消收藏');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initFavorite);
+    </script>
 </body>
 </html>

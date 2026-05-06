@@ -111,7 +111,89 @@
             background-color: #00e699;
             transform: scale(1.05);
         }
-        
+
+        /* 用户头像和下拉菜单 */
+        .user-profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ffaa, #00cc99);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
+        }
+
+        .user-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background-color: rgba(0, 0, 0, 0.95);
+            border: 1px solid #00ffaa;
+            border-radius: 10px;
+            padding: 10px 0;
+            min-width: 180px;
+            box-shadow: 0 5px 20px rgba(0, 255, 170, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .user-profile:hover .user-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .user-menu::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 15px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #00ffaa;
+        }
+
+        .user-menu-item {
+            padding: 12px 20px;
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu-item:hover {
+            background-color: rgba(0, 255, 170, 0.1);
+            color: #00ffaa;
+        }
+
+        .user-menu-item i {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
         /* 注册模态框 */
         .modal-overlay {
             display: none;
@@ -509,6 +591,14 @@
             <a href="declaration.html" class="nav-link">声明</a>
             <a href="contact.html" class="nav-link">联系站长</a>
             <button class="register-btn">注册</button>
+            <div class="user-profile">
+                <div class="user-avatar">U</div>
+                <div class="user-menu">
+                    <a href="history.html" class="user-menu-item"><i>📋</i> 历史记录</a>
+                    <a href="favorites.html" class="user-menu-item"><i>⭐</i> 我的收藏</a>
+                    <a href="account.html" class="user-menu-item"><i>👤</i> 账号信息</a>
+                </div>
+            </div>
         </div>
     </nav>
     
@@ -535,7 +625,7 @@
         <!-- 电影网格 -->
         <div class="movie-grid" id="movieGrid">
             <div class="movie-card" data-genres="动作,犯罪,冒险" data-movie="fast_furious">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20action%20film%2C%20dynamic%20scene%2C%20dark%20tone&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/速度与激情10/速度与激情10封面.webp');">
                     <div class="movie-rating">9.2</div>
                 </div>
                 <div class="movie-info">
@@ -550,7 +640,7 @@
             </div>
             
             <div class="movie-card" data-genres="科幻,惊悚,悬疑" data-movie="blade_runner">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20sci-fi%20film%2C%20futuristic%20city%2C%20dark%20atmosphere&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/银翼杀手2049/银翼杀手2049海报.webp');">
                     <div class="movie-rating">8.7</div>
                 </div>
                 <div class="movie-info">
@@ -565,7 +655,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情,犯罪" data-movie="shawshank">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20drama%20film%2C%20emotional%20scene%2C%20warm%20lighting&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/肖申克的救赎/肖申克的救赎海报.webp');">
                     <div class="movie-rating">9.0</div>
                 </div>
                 <div class="movie-info">
@@ -579,7 +669,7 @@
             </div>
             
             <div class="movie-card" data-genres="喜剧,剧情,爱情" data-movie="king_of_comedy">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20comedy%20film%2C%20funny%20scene%2C%20bright%20colors&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/喜剧之王/海报.webp');">
                     <div class="movie-rating">8.5</div>
                 </div>
                 <div class="movie-info">
@@ -594,7 +684,7 @@
             </div>
             
             <div class="movie-card" data-genres="惊悚,犯罪,悬疑" data-movie="seven">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20thriller%20film%2C%20suspenseful%20scene%2C%20dark%20mood&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/七宗罪/海报.webp');">
                     <div class="movie-rating">8.8</div>
                 </div>
                 <div class="movie-info">
@@ -609,7 +699,7 @@
             </div>
             
             <div class="movie-card" data-genres="爱情,剧情,灾难" data-movie="titanic">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20romance%20film%2C%20romantic%20scene%2C%20soft%20lighting&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/泰坦尼克号/海报.webp');">
                     <div class="movie-rating">8.6</div>
                 </div>
                 <div class="movie-info">
@@ -624,7 +714,7 @@
             </div>
             
             <div class="movie-card" data-genres="友情,剧情" data-movie="green_book">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Green%20Book%2C%20road%20trip%2C%201960s%20setting&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/绿皮书/海报.webp');">
                     <div class="movie-rating">8.9</div>
                 </div>
                 <div class="movie-info">
@@ -638,7 +728,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情,犯罪" data-movie="green_mile">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Green%20Mile%2C%20prison%20setting%2C%20mystical%20elements&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/绿里奇迹/海报.webp');">
                     <div class="movie-rating">9.1</div>
                 </div>
                 <div class="movie-info">
@@ -652,7 +742,7 @@
             </div>
             
             <div class="movie-card" data-genres="科幻,冒险" data-movie="interstellar">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Interstellar%2C%20space%20travel%2C%20futuristic&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/星际穿越/海报.webp');">
                     <div class="movie-rating">9.3</div>
                 </div>
                 <div class="movie-info">
@@ -666,7 +756,7 @@
             </div>
             
             <div class="movie-card" data-genres="犯罪,剧情" data-movie="godfather">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Godfather%2C%20mafia%20theme%2C%20dark%20mood&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/教父1/海报.webp');">
                     <div class="movie-rating">9.6</div>
                 </div>
                 <div class="movie-info">
@@ -680,7 +770,7 @@
             </div>
             
             <div class="movie-card" data-genres="超能力,动作,科幻" data-movie="amazing_spider_man">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Amazing%20Spider-Man%2C%20superhero%2C%20action%20scene&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/超凡蜘蛛侠/海报.webp');">
                     <div class="movie-rating">8.2</div>
                 </div>
                 <div class="movie-info">
@@ -695,7 +785,7 @@
             </div>
             
             <div class="movie-card" data-genres="超能力,超级英雄,科幻" data-movie="iron_man">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Iron%20Man%2C%20superhero%2C%20tech%20suit&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/钢铁侠/海报.webp');">
                     <div class="movie-rating">8.5</div>
                 </div>
                 <div class="movie-info">
@@ -710,7 +800,7 @@
             </div>
             
             <div class="movie-card" data-genres="喜剧,剧情" data-movie="legally_blonde">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Legally%20Blonde%2C%20comedy%2C%20law%20school&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/政律俏佳人/海报.webp');">
                     <div class="movie-rating">7.8</div>
                 </div>
                 <div class="movie-info">
@@ -724,7 +814,7 @@
             </div>
             
             <div class="movie-card" data-genres="科幻,剧情" data-movie="apes">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Rise%20of%20the%20Planet%20of%20the%20Apes%2C%20sci-fi%2C%20apes&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/猩球崛起/海报.webp');">
                     <div class="movie-rating">8.1</div>
                 </div>
                 <div class="movie-info">
@@ -738,7 +828,7 @@
             </div>
             
             <div class="movie-card" data-genres="科幻,超级英雄,动作" data-movie="avengers">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Avengers%2C%20superheroes%2C%20team%20action&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/复仇者联盟/海报.webp');">
                     <div class="movie-rating">8.3</div>
                 </div>
                 <div class="movie-info">
@@ -753,7 +843,7 @@
             </div>
             
             <div class="movie-card" data-genres="科幻,悬疑,动作" data-movie="inception">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Inception%2C%20sci-fi%2C%20dream%20heist&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/盗梦空间/海报.webp');">
                     <div class="movie-rating">9.3</div>
                 </div>
                 <div class="movie-info">
@@ -768,7 +858,7 @@
             </div>
             
             <div class="movie-card" data-genres="科幻,动画,喜剧" data-movie="wall_e">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20WALL-E%2C%20animated%2C%20robot%2C%20futuristic&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/机器人总动员/海报.webp');">
                     <div class="movie-rating">9.2</div>
                 </div>
                 <div class="movie-info">
@@ -783,7 +873,7 @@
             </div>
             
             <div class="movie-card" data-genres="喜剧,剧情,科幻" data-movie="truman">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Truman%20Show%2C%20comedy%2C%20reality%20tv&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/楚门的世界/海报.webp');">
                     <div class="movie-rating">8.9</div>
                 </div>
                 <div class="movie-info">
@@ -798,7 +888,7 @@
             </div>
             
             <div class="movie-card" data-genres="犯罪,剧情,传记" data-movie="catch_me">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Catch%20Me%20If%20You%20Can%2C%20crime%2C%20cat%20and%20mouse&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/猫鼠游戏/海报.webp');">
                     <div class="movie-rating">8.8</div>
                 </div>
                 <div class="movie-info">
@@ -813,7 +903,7 @@
             </div>
             
             <div class="movie-card" data-genres="爱情,友情,青春" data-movie="flipped">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Flipped%2C%20romance%2C%20coming%20of%20age&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/怦然心动/海报.webp');">
                     <div class="movie-rating">8.7</div>
                 </div>
                 <div class="movie-info">
@@ -828,7 +918,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情,爱情,传记" data-movie="forrest_gump">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Forrest%20Gump%2C%20drama%2C%20life%20journey&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/阿甘正传/海报.webp');">
                     <div class="movie-rating">9.5</div>
                 </div>
                 <div class="movie-info">
@@ -843,7 +933,7 @@
             </div>
             
             <div class="movie-card" data-genres="动作,超级英雄,犯罪" data-movie="dark_knight">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Dark%20Knight%2C%20superhero%2C%20action&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/蝙蝠侠：黑暗骑士/海报.webp');">
                     <div class="movie-rating">9.4</div>
                 </div>
                 <div class="movie-info">
@@ -858,7 +948,7 @@
             </div>
             
             <div class="movie-card" data-genres="犯罪,剧情,黑色幽默" data-movie="pulp_fiction">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Pulp%20Fiction%2C%20crime%2C%20nonlinear%20story&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/低俗小说/海报.webp');">
                     <div class="movie-rating">9.2</div>
                 </div>
                 <div class="movie-info">
@@ -873,7 +963,7 @@
             </div>
             
             <div class="movie-card" data-genres="动作,历史,剧情" data-movie="gladiator">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Gladiator%2C%20action%2C%20ancient%20rome&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/角斗士/海报.webp');">
                     <div class="movie-rating">8.9</div>
                 </div>
                 <div class="movie-info">
@@ -888,7 +978,7 @@
             </div>
             
             <div class="movie-card" data-genres="科幻,动作,悬疑" data-movie="matrix">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Matrix%2C%20sci-fi%2C%20action&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/黑客帝国/海报.webp');">
                     <div class="movie-rating">9.1</div>
                 </div>
                 <div class="movie-info">
@@ -903,7 +993,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情,历史,传记" data-movie="schindlers_list">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Schindler%27s%20List%2C%20drama%2C%20holocaust&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/辛德勒名单/海报.webp');">
                     <div class="movie-rating">9.5</div>
                 </div>
                 <div class="movie-info">
@@ -918,7 +1008,7 @@
             </div>
             
             <div class="movie-card" data-genres="犯罪,剧情,传记" data-movie="goodfellas">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Goodfellas%2C%20crime%2C%20mafia&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/好家伙/海报.webp');">
                     <div class="movie-rating">9.0</div>
                 </div>
                 <div class="movie-info">
@@ -933,7 +1023,7 @@
             </div>
             
             <div class="movie-card" data-genres="动画,家庭,冒险" data-movie="lion_king">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Lion%20King%2C%20animated%2C%20family&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/狮子王/海报.webp');">
                     <div class="movie-rating">9.1</div>
                 </div>
                 <div class="movie-info">
@@ -948,7 +1038,7 @@
             </div>
             
             <div class="movie-card" data-genres="战争,剧情,动作" data-movie="saving_private_ryan">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Saving%20Private%20Ryan%2C%20war%2C%20drama&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/拯救大兵瑞恩/海报.webp');">
                     <div class="movie-rating">9.0</div>
                 </div>
                 <div class="movie-info">
@@ -963,7 +1053,7 @@
             </div>
             
             <div class="movie-card" data-genres="犯罪,惊悚,剧情" data-movie="departed">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Departed%2C%20crime%2C%20thriller&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/无间道风云/海报.webp');">
                     <div class="movie-rating">8.8</div>
                 </div>
                 <div class="movie-info">
@@ -978,7 +1068,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情,音乐,励志" data-movie="whiplash">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Whiplash%2C%20drama%2C%20music&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/爆裂鼓手/海报.webp');">
                     <div class="movie-rating">9.0</div>
                 </div>
                 <div class="movie-info">
@@ -993,7 +1083,7 @@
             </div>
             
             <div class="movie-card" data-genres="爱情,音乐,剧情" data-movie="la_la_land">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20La%20La%20Land%2C%20musical%2C%20romance&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/爱乐之城/海报.webp');">
                     <div class="movie-rating">8.8</div>
                 </div>
                 <div class="movie-info">
@@ -1008,7 +1098,7 @@
             </div>
             
             <div class="movie-card" data-genres="喜剧,剧情,友情" data-movie="intouchables">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Intouchables%2C%20comedy%2C%20drama&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/触不可及/海报.webp');">
                     <div class="movie-rating">9.2</div>
                 </div>
                 <div class="movie-info">
@@ -1023,7 +1113,7 @@
             </div>
             
             <div class="movie-card" data-genres="惊悚,悬疑,剧情" data-movie="gone_girl">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Gone%20Girl%2C%20thriller%2C%20mystery&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/消失的爱人/海报.webp');">
                     <div class="movie-rating">8.7</div>
                 </div>
                 <div class="movie-info">
@@ -1038,7 +1128,7 @@
             </div>
             
             <div class="movie-card" data-genres="动作,科幻,冒险" data-movie="mad_max">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Mad%20Max%3A%20Fury%20Road%2C%20action%2C%20post-apocalyptic&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/疯狂的麦克斯：狂暴之路/海报.webp');">
                     <div class="movie-rating">8.6</div>
                 </div>
                 <div class="movie-info">
@@ -1053,7 +1143,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情" data-movie="room">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%2012%20Angry%20Men%2C%201957%20classic%20drama%2C%20courtroom%2C%20jury%20deliberation&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/十二怒汉/海报.webp');">
                     <div class="movie-rating">9.3</div>
                 </div>
                 <div class="movie-info">
@@ -1066,7 +1156,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情,悬疑" data-movie="big_short">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Witness%20for%20the%20Prosecution%2C%201957%20classic%20film%20noir%2C%20courtroom%20drama&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/控方证人/海报.webp');">
                     <div class="movie-rating">9.6</div>
                 </div>
                 <div class="movie-info">
@@ -1080,7 +1170,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情,爱情,移民" data-movie="brooklyn">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Brooklyn%2C%20drama%2C%20romance&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/布鲁克林/海报.webp');">
                     <div class="movie-rating">8.3</div>
                 </div>
                 <div class="movie-info">
@@ -1095,7 +1185,7 @@
             </div>
             
             <div class="movie-card" data-genres="动作,冒险,剧情" data-movie="revenant">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Revenant%2C%20action%2C%20survival&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/荒野猎人/海报.webp');">
                     <div class="movie-rating">8.4</div>
                 </div>
                 <div class="movie-info">
@@ -1110,7 +1200,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情" data-movie="spotlight">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Dead%20Poets%20Society%2C%201989%20classic%20drama%2C%20english%20teacher%2C%20poetry&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/死亡诗社/海报.webp');">
                     <div class="movie-rating">9.1</div>
                 </div>
                 <div class="movie-info">
@@ -1123,7 +1213,7 @@
             </div>
             
             <div class="movie-card" data-genres="奇幻,爱情,剧情" data-movie="shape_of_water">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Shape%20of%20Water%2C%20fantasy%2C%20romance&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/水形物语/海报.webp');">
                     <div class="movie-rating">8.3</div>
                 </div>
                 <div class="movie-info">
@@ -1138,7 +1228,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情,犯罪,黑色幽默" data-movie="three_billboards">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Three%20Billboards%20Outside%20Ebbing%2C%20Missouri%2C%20drama%2C%20crime&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/三块广告牌/海报.webp');">
                     <div class="movie-rating">8.7</div>
                 </div>
                 <div class="movie-info">
@@ -1153,7 +1243,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情" data-movie="call_me_by_your_name">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20One%20Flew%20Over%20the%20Cuckoos%20Nest%2C%201975%20classic%20drama%2C%20mental%20institution&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/飞越疯人院/海报.webp');">
                     <div class="movie-rating">9.1</div>
                 </div>
                 <div class="movie-info">
@@ -1166,7 +1256,7 @@
             </div>
             
             <div class="movie-card" data-genres="战争,动作,历史" data-movie="dunkirk">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Dunkirk%2C%20war%2C%20action&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/敦刻尔克/海报.webp');">
                     <div class="movie-rating">8.4</div>
                 </div>
                 <div class="movie-info">
@@ -1181,7 +1271,7 @@
             </div>
             
             <div class="movie-card" data-genres="恐怖,惊悚,悬疑" data-movie="get_out">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Get%20Out%2C%20horror%2C%20thriller&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/逃出绝命镇/海报.webp');">
                     <div class="movie-rating">8.2</div>
                 </div>
                 <div class="movie-info">
@@ -1196,7 +1286,7 @@
             </div>
             
             <div class="movie-card" data-genres="音乐,爱情,剧情" data-movie="a_star_is_born">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20A%20Star%20Is%20Born%2C%20musical%2C%20romance&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/一个明星的诞生/海报.webp');">
                     <div class="movie-rating">8.5</div>
                 </div>
                 <div class="movie-info">
@@ -1211,7 +1301,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情,家庭,传记" data-movie="roma">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Roma%2C%20drama%2C%20family&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/罗马/海报.webp');">
                     <div class="movie-rating">8.6</div>
                 </div>
                 <div class="movie-info">
@@ -1226,7 +1316,7 @@
             </div>
             
             <div class="movie-card" data-genres="传记,音乐,剧情" data-movie="bohemian_rhapsody">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Bohemian%20Rhapsody%2C%20biography%2C%20music&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/波西米亚狂想曲/海报.webp');">
                     <div class="movie-rating">8.7</div>
                 </div>
                 <div class="movie-info">
@@ -1241,7 +1331,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情,惊悚,犯罪" data-movie="joker">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Joker%2C%20drama%2C%20thriller&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/小丑/海报.webp');">
                     <div class="movie-rating">8.9</div>
                 </div>
                 <div class="movie-info">
@@ -1256,7 +1346,7 @@
             </div>
             
             <div class="movie-card" data-genres="剧情,惊悚,黑色幽默" data-movie="parasite">
-                <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Parasite%2C%20drama%2C%20thriller&image_size=portrait_4_3');">
+                <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/寄生虫/海报.webp');">
                     <div class="movie-rating">9.1</div>
                 </div>
                 <div class="movie-info">

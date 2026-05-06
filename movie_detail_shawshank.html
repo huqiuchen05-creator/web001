@@ -385,6 +385,39 @@
             background-color: #00ffaa;
             color: #000;
         }
+        
+        /* 收藏按钮 */
+        .favorite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .favorite-btn.favorited {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        .movie-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -413,7 +446,7 @@
         <div class="movie-detail-container">
             <!-- 电影海报区域 -->
             <div class="movie-poster-section">
-                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Shawshank%20Redemption%2C%20prison%20drama%2C%20hope&image_size=portrait_4_3" alt="肖申克的救赎" class="movie-poster">
+                <img src="C:/Users/19256/Desktop/新建文件夹/肖申克的救赎/肖申克的救赎海报.webp" alt="肖申克的救赎" class="movie-poster">
                 <div class="movie-rating">9.0</div>
             </div>
             
@@ -473,6 +506,13 @@
                     <p>最终，安迪成功越狱，他不仅证明了自己的清白，还揭露了监狱长的腐败行为。瑞德在假释后找到了安迪，两人在墨西哥的海滩上重逢，开始了新的生活。</p>
                     <p>电影通过安迪的故事，探讨了希望、自由和友谊的主题，是一部充满力量和感动的经典之作。</p>
                 </div>
+                
+                <div class="movie-actions">
+                    <button class="favorite-btn" onclick="toggleFavorite()">
+                        <span class="favorite-icon">⭐</span>
+                        <span class="favorite-text">加入收藏</span>
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -481,27 +521,27 @@
             <h2 class="section-title">视频与图片</h2>
             <div class="media-grid">
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Tim%20Robbins%20as%20Andy%20Dufresne%20in%20The%20Shawshank%20Redemption&image_size=landscape_16_9" alt="剧照1">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/肖申克的救赎/肖申克的救赎剧照1.webp" alt="剧照1">
                     <div class="media-overlay">剧照 1</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Morgan%20Freeman%20as%20Red%20in%20The%20Shawshank%20Redemption&image_size=landscape_16_9" alt="剧照2">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/肖申克的救赎/肖申克的救赎剧照2.webp" alt="剧照2">
                     <div class="media-overlay">剧照 2</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=prison%20scene%20in%20The%20Shawshank%20Redemption&image_size=landscape_16_9" alt="剧照3">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/肖申克的救赎/肖申克的救赎剧照3.webp" alt="剧照3">
                     <div class="media-overlay">剧照 3</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Andy%20escaping%20from%20prison%20in%20The%20Shawshank%20Redemption&image_size=landscape_16_9" alt="剧照4">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/肖申克的救赎/肖申克的救赎剧照4.webp" alt="剧照4">
                     <div class="media-overlay">剧照 4</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Andy%20and%20Red%20reunited%20on%20beach%20in%20The%20Shawshank%20Redemption&image_size=landscape_16_9" alt="剧照5">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/肖申克的救赎/肖申克的救赎剧照5.webp" alt="剧照5">
                     <div class="media-overlay">剧照 5</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Shawshank%20Redemption%20library%20scene&image_size=landscape_16_9" alt="剧照6">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/肖申克的救赎/肖申克的救赎剧照6.webp" alt="剧照6">
                     <div class="media-overlay">剧照 6</div>
                 </div>
             </div>
@@ -579,5 +619,46 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        const MOVIE_ID = 'shawshank';
+        let isFavorited = false;
+        
+        function initFavorite() {
+            const saved = localStorage.getItem('favorite_' + MOVIE_ID);
+            isFavorited = saved === 'true';
+            
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+            }
+        }
+        
+        function toggleFavorite() {
+            isFavorited = !isFavorited;
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            localStorage.setItem('favorite_' + MOVIE_ID, isFavorited);
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+                alert('已添加到收藏！');
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+                alert('已取消收藏');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initFavorite);
+    </script>
 </body>
 </html>

@@ -385,6 +385,38 @@
             background-color: #00ffaa;
             color: #000;
         }
+        
+        .favorite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .favorite-btn.favorited {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        .movie-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -413,7 +445,7 @@
         <div class="movie-detail-container">
             <!-- 电影海报区域 -->
             <div class="movie-poster-section">
-                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Avengers%2C%20superheroes%2C%20team%20action&image_size=portrait_4_3" alt="复仇者联盟" class="movie-poster">
+                <img src="C:/Users/19256/Desktop/新建文件夹/复仇者联盟/海报.webp" alt="复仇者联盟" class="movie-poster">
                 <div class="movie-rating">8.3</div>
             </div>
             
@@ -473,6 +505,13 @@
                     <p>他们的敌人是洛基（汤姆·希德勒斯顿饰），雷神的弟弟，他获得了宇宙魔方的力量，计划征服地球。复仇者联盟必须克服彼此之间的分歧，团结起来，共同对抗洛基和他的外星军队。</p>
                     <p>电影通过这个故事，展现了团队合作的力量和超级英雄的责任感，是一部充满动作和特效的超级英雄大片。</p>
                 </div>
+                
+                <div class="movie-actions">
+                    <button class="favorite-btn" onclick="toggleFavorite()">
+                        <span class="favorite-icon">⭐</span>
+                        <span class="favorite-text">加入收藏</span>
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -481,27 +520,27 @@
             <h2 class="section-title">视频与图片</h2>
             <div class="media-grid">
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Robert%20Downey%20Jr.%20as%20Iron%20Man%20in%20The%20Avengers&image_size=landscape_16_9" alt="剧照1">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/复仇者联盟/剧照1.webp" alt="剧照1">
                     <div class="media-overlay">剧照 1</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Chris%20Evans%20as%20Captain%20America%20in%20The%20Avengers&image_size=landscape_16_9" alt="剧照2">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/复仇者联盟/剧照2.webp" alt="剧照2">
                     <div class="media-overlay">剧照 2</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Chris%20Hemsworth%20as%20Thor%20in%20The%20Avengers&image_size=landscape_16_9" alt="剧照3">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/复仇者联盟/剧照3.webp" alt="剧照3">
                     <div class="media-overlay">剧照 3</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Avengers%20team%20scene&image_size=landscape_16_9" alt="剧照4">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/复仇者联盟/剧照4.webp" alt="剧照4">
                     <div class="media-overlay">剧照 4</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Tom%20Hiddleston%20as%20Loki%20in%20The%20Avengers&image_size=landscape_16_9" alt="剧照5">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/复仇者联盟/剧照5.webp" alt="剧照5">
                     <div class="media-overlay">剧照 5</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Avengers%20final%20battle%20scene&image_size=landscape_16_9" alt="剧照6">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/复仇者联盟/剧照6.webp" alt="剧照6">
                     <div class="media-overlay">剧照 6</div>
                 </div>
             </div>
@@ -579,5 +618,46 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        const MOVIE_ID = 'avengers';
+        let isFavorited = false;
+        
+        function initFavorite() {
+            const saved = localStorage.getItem('favorite_' + MOVIE_ID);
+            isFavorited = saved === 'true';
+            
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+            }
+        }
+        
+        function toggleFavorite() {
+            isFavorited = !isFavorited;
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            localStorage.setItem('favorite_' + MOVIE_ID, isFavorited);
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+                alert('已添加到收藏！');
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+                alert('已取消收藏');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initFavorite);
+    </script>
 </body>
 </html>

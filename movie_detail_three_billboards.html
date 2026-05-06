@@ -270,6 +270,38 @@
             background-color: #00ffaa;
             color: #000;
         }
+        
+        .favorite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .favorite-btn.favorited {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        .movie-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -294,7 +326,7 @@
         
         <!-- 电影详情 -->
         <div class="movie-detail-container">
-            <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Three%20Billboards%20Outside%20Ebbing%2C%20Missouri%2C%20drama%2C%20crime%2C%20red%20billboards&image_size=portrait_4_3');"></div>
+            <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/三块广告牌/海报.webp');"></div>
             <div class="movie-info">
                 <h1 class="movie-title">三块广告牌</h1>
                 <div class="movie-meta">
@@ -344,18 +376,25 @@
             <p class="synopsis-text">
                 故事发生在密苏里州的一个小镇上，米尔德丽德·海耶斯（弗兰西斯·麦克多蒙德饰）的女儿被奸杀，案件迟迟未破。为了引起警方的注意，她在小镇边缘的道路上租下了三块广告牌，上面写着："强奸致死"、"警方怎么还没抓到凶手？"、"威洛比警长，你在干什么？"。这一举动引起了当地警方和居民的不满，尤其是威洛比警长（伍迪·哈里森饰）和他的副手迪克森（山姆·洛克威尔饰）。随着事件的发展，米尔德丽德与警方之间的冲突不断升级，同时也揭示了小镇居民的复杂性和人性的多面性。
             </p>
+            
+            <div class="movie-actions">
+                <button class="favorite-btn" onclick="toggleFavorite()">
+                    <span class="favorite-icon">⭐</span>
+                    <span class="favorite-text">加入收藏</span>
+                </button>
+            </div>
         </div>
         
         <!-- 图片展示 -->
         <div class="movie-photos">
             <h2 class="section-title">剧照</h2>
             <div class="photo-grid">
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20red%20billboards%2C%20roadside&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20woman%20confronting%20police&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20police%20station%2C%20conflict&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20small%20town%20atmosphere&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20emotional%20moment%2C%20grief&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Three%20Billboards%20movie%20scene%2C%20climax%20scene%2C%20resolution&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/三块广告牌/剧照1.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/三块广告牌/剧照2.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/三块广告牌/剧照3.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/三块广告牌/剧照4.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/三块广告牌/剧照5.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/三块广告牌/剧照6.webp');"></div>
             </div>
         </div>
         
@@ -404,5 +443,46 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        const MOVIE_ID = 'three_billboards';
+        let isFavorited = false;
+        
+        function initFavorite() {
+            const saved = localStorage.getItem('favorite_' + MOVIE_ID);
+            isFavorited = saved === 'true';
+            
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+            }
+        }
+        
+        function toggleFavorite() {
+            isFavorited = !isFavorited;
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            localStorage.setItem('favorite_' + MOVIE_ID, isFavorited);
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+                alert('已添加到收藏！');
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+                alert('已取消收藏');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initFavorite);
+    </script>
 </body>
 </html>

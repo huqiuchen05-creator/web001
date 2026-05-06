@@ -375,6 +375,38 @@
             background-color: #00ffaa;
             color: #000;
         }
+        
+        .favorite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .favorite-btn.favorited {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        .movie-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -400,7 +432,7 @@
         
         <div class="movie-detail-container">
             <div class="movie-poster-section">
-                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20The%20Revenant%2C%20adventure%2C%20drama%2C%20nature&image_size=portrait_4_3" alt="荒野猎人" class="movie-poster">
+                <img src="C:/Users/19256/Desktop/新建文件夹/荒野猎人/海报.webp" alt="荒野猎人" class="movie-poster">
                 <div class="movie-rating">8.6</div>
             </div>
             
@@ -459,6 +491,13 @@
                     <p>休·格拉斯被留在荒野中等死，但他凭借顽强的意志和求生的本能，在严酷的自然环境中生存下来。他只有一个信念：复仇。</p>
                     <p>他开始了漫长的复仇之路，在这个过程中，他不仅要面对恶劣的自然环境，还要面对背叛他的队友。这是一部关于生存、复仇和人性的电影。</p>
                 </div>
+                
+                <div class="movie-actions">
+                    <button class="favorite-btn" onclick="toggleFavorite()">
+                        <span class="favorite-icon">⭐</span>
+                        <span class="favorite-text">加入收藏</span>
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -466,27 +505,27 @@
             <h2 class="section-title">视频与图片</h2>
             <div class="media-grid">
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Revenant%20movie%20scene%2C%20wilderness%20nature%2C%20forest&image_size=landscape_16_9" alt="剧照1">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/荒野猎人/剧照1.webp" alt="剧照1">
                     <div class="media-overlay">剧照 1</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Revenant%20movie%20scene%2C%20bear%20attack%2C%20intense&image_size=landscape_16_9" alt="剧照2">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/荒野猎人/剧照2.webp" alt="剧照2">
                     <div class="media-overlay">剧照 2</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Revenant%20movie%20scene%2C%20survival%20in%20snow%2C%20cold&image_size=landscape_16_9" alt="剧照3">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/荒野猎人/剧照3.webp" alt="剧照3">
                     <div class="media-overlay">剧照 3</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Revenant%20movie%20scene%2C%20revenge%20journey%2C%20determination&image_size=landscape_16_9" alt="剧照4">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/荒野猎人/剧照4.webp" alt="剧照4">
                     <div class="media-overlay">剧照 4</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Revenant%20movie%20scene%2C%20native%20american%20tribe&image_size=landscape_16_9" alt="剧照5">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/荒野猎人/剧照5.webp" alt="剧照5">
                     <div class="media-overlay">剧照 5</div>
                 </div>
                 <div class="media-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=The%20Revenant%20movie%20scene%2C%20final%20confrontation%2C%20emotional&image_size=landscape_16_9" alt="剧照6">
+                    <img src="C:/Users/19256/Desktop/新建文件夹/荒野猎人/剧照6.webp" alt="剧照6">
                     <div class="media-overlay">剧照 6</div>
                 </div>
             </div>
@@ -561,5 +600,46 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        const MOVIE_ID = 'revenant';
+        let isFavorited = false;
+        
+        function initFavorite() {
+            const saved = localStorage.getItem('favorite_' + MOVIE_ID);
+            isFavorited = saved === 'true';
+            
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+            }
+        }
+        
+        function toggleFavorite() {
+            isFavorited = !isFavorited;
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            localStorage.setItem('favorite_' + MOVIE_ID, isFavorited);
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+                alert('已添加到收藏！');
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+                alert('已取消收藏');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initFavorite);
+    </script>
 </body>
 </html>

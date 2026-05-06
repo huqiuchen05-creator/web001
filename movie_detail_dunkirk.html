@@ -270,6 +270,38 @@
             background-color: #00ffaa;
             color: #000;
         }
+        
+        .favorite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .favorite-btn.favorited {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        .movie-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -294,7 +326,7 @@
         
         <!-- 电影详情 -->
         <div class="movie-detail-container">
-            <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Dunkirk%2C%20war%2C%20military%2C%20beach%20evacuation&image_size=portrait_4_3');"></div>
+            <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/敦刻尔克/海报.webp');"></div>
             <div class="movie-info">
                 <h1 class="movie-title">敦刻尔克</h1>
                 <div class="movie-meta">
@@ -344,18 +376,25 @@
             <p class="synopsis-text">
                 电影讲述了第二次世界大战初期，40万英法联军被德军围困在敦刻尔克海滩的故事。影片从三个不同的视角展开：陆地（一周）、海洋（一天）和空中（一小时），展现了士兵们在绝境中的生存挣扎和英国民众的救援行动。在德国军队的猛烈攻势下，英法联军面临着被全歼的危险。英国政府发动了代号为"发电机行动"的救援计划，动员了大量民用船只前往敦刻尔克，最终成功撤回了33万多名士兵，创造了二战史上的奇迹。
             </p>
+            
+            <div class="movie-actions">
+                <button class="favorite-btn" onclick="toggleFavorite()">
+                    <span class="favorite-icon">⭐</span>
+                    <span class="favorite-text">加入收藏</span>
+                </button>
+            </div>
         </div>
         
         <!-- 图片展示 -->
         <div class="movie-photos">
             <h2 class="section-title">剧照</h2>
             <div class="photo-grid">
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Dunkirk%20movie%20scene%2C%20beach%20evacuation%2C%20soldiers%20waiting&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Dunkirk%20movie%20scene%2C%20spitfire%20fighter%20planes%2C%20air%20battle&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Dunkirk%20movie%20scene%2C%20civilian%20boats%2C%20rescue%20mission&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Dunkirk%20movie%20scene%2C%20military%20ships%2C%20naval%20action&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Dunkirk%20movie%20scene%2C%20soldiers%20on%20board%2C%20relief&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Dunkirk%20movie%20scene%2C%20climax%20scene%2C%20heroic%20moment&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/敦刻尔克/剧照1.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/敦刻尔克/剧照2.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/敦刻尔克/剧照3.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/敦刻尔克/剧照4.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/敦刻尔克/剧照5.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/敦刻尔克/剧照6.webp');"></div>
             </div>
         </div>
         
@@ -404,5 +443,46 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        const MOVIE_ID = 'dunkirk';
+        let isFavorited = false;
+        
+        function initFavorite() {
+            const saved = localStorage.getItem('favorite_' + MOVIE_ID);
+            isFavorited = saved === 'true';
+            
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+            }
+        }
+        
+        function toggleFavorite() {
+            isFavorited = !isFavorited;
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            localStorage.setItem('favorite_' + MOVIE_ID, isFavorited);
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+                alert('已添加到收藏！');
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+                alert('已取消收藏');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initFavorite);
+    </script>
 </body>
 </html>

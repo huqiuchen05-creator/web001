@@ -95,6 +95,38 @@
             transform: translateX(-5px);
         }
         
+        .favorite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            border: 1px solid #00ffaa;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .favorite-btn.favorited {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        .movie-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
         /* 主体内容区 */
         .main-content {
             margin-top: 80px;
@@ -294,7 +326,7 @@
         
         <!-- 电影详情 -->
         <div class="movie-detail-container">
-            <div class="movie-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=movie%20poster%20for%20Mad%20Max%3A%20Fury%20Road%2C%20action%2C%20post-apocalyptic%2C%20desert%20setting&image_size=portrait_4_3');"></div>
+            <div class="movie-poster" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/疯狂的麦克斯：狂暴之路/海报.webp');"></div>
             <div class="movie-info">
                 <h1 class="movie-title">疯狂的麦克斯：狂暴之路</h1>
                 <div class="movie-meta">
@@ -344,18 +376,25 @@
             <p class="synopsis-text">
                 在一个后世界末日的荒原上，水资源成为稀缺资源，由暴君乔·恩格尔（休·基斯-拜恩饰）控制。他的得力助手弗瑞奥萨（查理兹·塞隆饰）在一次任务中背叛了他，带着他的五位妻子逃离。麦克斯（汤姆·哈迪饰）是一名前警察，被乔的手下捕获，成为了血袋。在弗瑞奥萨的逃亡过程中，麦克斯被卷入其中，两人被迫合作，穿越危险的荒原，寻找弗瑞奥萨的故乡绿原。一路上，他们必须面对乔的追杀和各种荒原势力的威胁。
             </p>
+            
+            <div class="movie-actions">
+                <button class="favorite-btn" onclick="toggleFavorite()">
+                    <span class="favorite-icon">⭐</span>
+                    <span class="favorite-text">加入收藏</span>
+                </button>
+            </div>
         </div>
         
         <!-- 图片展示 -->
         <div class="movie-photos">
             <h2 class="section-title">剧照</h2>
             <div class="photo-grid">
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Mad%20Max%3A%20Fury%20Road%20movie%20scene%2C%20car%20chase%2C%20action%20sequence&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Mad%20Max%3A%20Fury%20Road%20movie%20scene%2C%20desert%20landscape%2C%20post-apocalyptic&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Mad%20Max%3A%20Fury%20Road%20movie%20scene%2C%20Furiosa%20character%2C%20strong%20female&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Mad%20Max%3A%20Fury%20Road%20movie%20scene%2C%20Max%20character%2C%20gritty%20warrior&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Mad%20Max%3A%20Fury%20Road%20movie%20scene%2C%20war%20boys%2C%20crazy%20villains&image_size=landscape_4_3');"></div>
-                <div class="photo-item" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Mad%20Max%3A%20Fury%20Road%20movie%20scene%2C%20climax%20battle%2C%20epic%20moment&image_size=landscape_4_3');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/疯狂的麦克斯：狂暴之路/剧照1.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/疯狂的麦克斯：狂暴之路/剧照2.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/疯狂的麦克斯：狂暴之路/剧照3.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/疯狂的麦克斯：狂暴之路/剧照4.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/疯狂的麦克斯：狂暴之路/剧照5.webp');"></div>
+                <div class="photo-item" style="background-image: url('C:/Users/19256/Desktop/新建文件夹/疯狂的麦克斯：狂暴之路/剧照6.webp');"></div>
             </div>
         </div>
         
@@ -404,5 +443,46 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        const MOVIE_ID = 'mad_max';
+        let isFavorited = false;
+        
+        function initFavorite() {
+            const saved = localStorage.getItem('favorite_' + MOVIE_ID);
+            isFavorited = saved === 'true';
+            
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+            }
+        }
+        
+        function toggleFavorite() {
+            isFavorited = !isFavorited;
+            const btn = document.querySelector('.favorite-btn');
+            const text = document.querySelector('.favorite-text');
+            
+            localStorage.setItem('favorite_' + MOVIE_ID, isFavorited);
+            
+            if (isFavorited) {
+                btn.classList.add('favorited');
+                text.textContent = '已收藏';
+                alert('已添加到收藏！');
+            } else {
+                btn.classList.remove('favorited');
+                text.textContent = '加入收藏';
+                alert('已取消收藏');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initFavorite);
+    </script>
 </body>
 </html>

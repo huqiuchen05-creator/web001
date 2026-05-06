@@ -110,7 +110,89 @@
         .register-btn:hover {
             transform: scale(1.05);
         }
-        
+
+        /* 用户头像和下拉菜单 */
+        .user-profile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ffaa, #00cc99);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
+        }
+
+        .user-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background-color: rgba(0, 0, 0, 0.95);
+            border: 1px solid #00ffaa;
+            border-radius: 10px;
+            padding: 10px 0;
+            min-width: 180px;
+            box-shadow: 0 5px 20px rgba(0, 255, 170, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .user-profile:hover .user-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .user-menu::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 15px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #00ffaa;
+        }
+
+        .user-menu-item {
+            padding: 12px 20px;
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu-item:hover {
+            background-color: rgba(0, 255, 170, 0.1);
+            color: #00ffaa;
+        }
+
+        .user-menu-item i {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
         /* 主体内容区 */
         .main-content {
             margin-top: 80px;
@@ -487,6 +569,14 @@
             <a href="declaration.html" class="nav-link">声明</a>
             <a href="contact.html" class="nav-link">联系站长</a>
             <button class="register-btn">注册</button>
+            <div class="user-profile">
+                <div class="user-avatar">U</div>
+                <div class="user-menu">
+                    <a href="#" class="user-menu-item"><i>📋</i> 历史记录</a>
+                    <a href="#" class="user-menu-item"><i>⭐</i> 我的收藏</a>
+                    <a href="#" class="user-menu-item"><i>👤</i> 账号信息</a>
+                </div>
+            </div>
         </div>
     </nav>
     
