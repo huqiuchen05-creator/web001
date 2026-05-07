@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1：狂飙飞车 - 洞悉影视</title>
+    <title>狂飙飞车 - 影视详情 - 洞悉影视</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: Arial, sans-serif;
             background-color: #000;
             color: #fff;
             overflow-x: hidden;
         }
-
+        
+        /* 顶部导航栏 */
         .navbar {
             position: fixed;
             top: 0;
@@ -27,236 +28,365 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 50px;
+            padding: 10px 50px;
             z-index: 1000;
         }
-
+        
         .logo {
-            text-decoration: none;
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s ease;
         }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
+        
         .logo img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
         }
-
+        
         .logo-text {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
-            color: #00ffaa;
+            color: #fff;
         }
-
+        
         .nav-links {
             display: flex;
             gap: 20px;
             align-items: center;
         }
-
+        
         .nav-link {
             color: #fff;
             text-decoration: none;
             font-size: 16px;
-            transition: all 0.3s ease;
         }
-
-        .nav-link:hover {
-            color: #00ffaa;
+        
+        .nav-link:not(:last-child)::after {
+            content: "|";
+            margin-left: 20px;
+            color: #fff;
         }
-
+        
         .register-btn {
             background-color: #00ffaa;
             color: #000;
             border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 8px 20px;
+            border-radius: 20px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
-
-        .register-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 255, 170, 0.5);
+        
+        /* 主体内容区 */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 50px;
         }
-
-        .user-profile {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #00ffaa, #00cc99);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
+        
+        /* 页面标题 */
+        .page-title {
+            font-size: 32px;
             font-weight: bold;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .user-avatar:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
-        }
-
-        .user-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 10px;
-            background-color: rgba(0, 0, 0, 0.95);
-            border: 1px solid #00ffaa;
-            border-radius: 10px;
-            padding: 10px 0;
-            min-width: 180px;
-            box-shadow: 0 5px 20px rgba(0, 255, 170, 0.2);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 999;
-        }
-
-        .user-profile:hover .user-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .user-menu::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            right: 15px;
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-bottom: 8px solid #00ffaa;
-        }
-
-        .user-menu-item {
-            padding: 12px 20px;
-            color: #fff;
-            text-decoration: none;
-            display: block;
-            transition: all 0.3s ease;
-        }
-
-        .user-menu-item:hover {
-            background-color: rgba(0, 255, 170, 0.1);
+            margin-bottom: 30px;
             color: #00ffaa;
         }
-
-        .main-content {
-            padding-top: 100px;
-            padding-bottom: 50px;
-        }
-
-        .movie-header {
-            display: flex;
+        
+        /* 电影详情容器 */
+        .movie-detail-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
             gap: 40px;
-            padding: 0 50px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
-
+        
+        /* 电影海报区域 */
+        .movie-poster-section {
+            position: relative;
+        }
+        
         .movie-poster {
-            width: 300px;
-            height: 450px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 15px;
-            flex-shrink: 0;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 255, 170, 0.3);
         }
-
-        .movie-info {
-            flex: 1;
+        
+        .movie-rating {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #00ffaa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
         }
-
+        
+        /* 电影信息区域 */
+        .movie-info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
         .movie-title {
-            font-size: 36px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffaa;
+        }
+        
+        .movie-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .meta-label {
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .meta-value {
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .movie-genres {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .genre-tag {
+            background-color: rgba(0, 255, 170, 0.2);
+            color: #00ffaa;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+        
+        .movie-synopsis {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+        
+        .synopsis-title {
+            font-size: 18px;
             font-weight: bold;
             color: #00ffaa;
             margin-bottom: 10px;
         }
-
-        .movie-english-title {
-            font-size: 18px;
-            color: #888;
-            margin-bottom: 20px;
+        
+        /* 内容模块 */
+        .content-section {
+            margin-bottom: 50px;
         }
-
-        .movie-meta {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            color: #aaa;
-        }
-
-        .movie-genres {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .genre-tag {
-            background-color: rgba(0, 255, 170, 0.2);
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
             color: #00ffaa;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-        }
-
-        .movie-rating {
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 30px;
         }
-
-        .rating-score {
-            font-size: 48px;
-            font-weight: bold;
-            color: #00ffaa;
+        
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: rgba(0, 255, 170, 0.3);
         }
-
-        .rating-source {
-            color: #888;
+        
+        /* 视频图片模块 */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .media-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .media-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .media-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .media-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 10px;
+            color: #fff;
             font-size: 14px;
         }
-
-        .movie-synopsis {
+        
+        /* 讨论区模块 */
+        .discussion-section {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+        }
+        
+        .comment-form {
+            display: flex;
+            gap: 15px;
             margin-bottom: 30px;
         }
-
-        .synopsis-title {
-            font-size: 20px;
+        
+        .comment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ffaa;
+            font-weight: bold;
+        }
+        
+        .comment-input-area {
+            flex: 1;
+        }
+        
+        .comment-input {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 170, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            color: #fff;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .comment-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .comment-btn {
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .cancel-btn {
+            background-color: transparent;
+            color: #aaa;
+            border: 1px solid #aaa;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .comment-item {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .comment-author {
             font-weight: bold;
             color: #00ffaa;
-            margin-bottom: 15px;
         }
-
-        .synopsis-text {
-            line-height: 1.8;
-            color: #ccc;
+        
+        .comment-time {
+            font-size: 12px;
+            color: #aaa;
         }
-
+        
+        .comment-text {
+            line-height: 1.5;
+        }
+        
+        .comment-reactions {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .reaction-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .reaction-btn:hover {
+            color: #00ffaa;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffaa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: #00ffaa;
+            color: #000;
+        }
+        
+        /* 收藏按钮 */
         .favorite-btn {
             display: inline-flex;
             align-items: center;
@@ -271,190 +401,218 @@
             font-weight: bold;
             transition: all 0.3s ease;
         }
-
+        
         .favorite-btn:hover {
             background-color: #00ffaa;
             color: #000;
             transform: scale(1.05);
         }
-
+        
         .favorite-btn.favorited {
             background-color: #00ffaa;
             color: #000;
         }
-
+        
         .movie-actions {
             display: flex;
             gap: 15px;
             margin-top: 20px;
         }
-
-        .back-btn {
+        
+        /* 播放按钮 */
+        .play-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background-color: rgba(0, 255, 170, 0.2);
-            color: #00ffaa;
-            border: 1px solid #00ffaa;
+            background-color: #00ffaa;
+            color: #000;
+            border: none;
             padding: 12px 25px;
             border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
             transition: all 0.3s ease;
-            text-decoration: none;
-            margin-bottom: 30px;
-            margin-left: 50px;
         }
-
-        .back-btn:hover {
-            background-color: #00ffaa;
-            color: #000;
-        }
-
-        .content-section {
-            padding: 0 50px;
-            margin-bottom: 40px;
-        }
-
-        .section-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #00ffaa;
-            margin-bottom: 20px;
-        }
-
-        .media-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .media-item {
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            height: 200px;
-        }
-
-        .media-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .media-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            padding: 10px;
-            font-size: 14px;
-            color: #fff;
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 10px 20px;
-            }
-
-            .logo-text {
-                font-size: 18px;
-            }
-
-            .movie-header {
-                flex-direction: column;
-                padding: 0 20px;
-            }
-
-            .movie-poster {
-                width: 100%;
-                height: 400px;
-            }
-
-            .movie-info {
-                padding: 0;
-            }
-
-            .back-btn {
-                margin-left: 20px;
-            }
-
-            .content-section {
-                padding: 0 20px;
-            }
+        
+        .play-btn:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
+    <!-- 顶部导航栏 -->
     <nav class="navbar">
-        <a href="index.html" class="logo">
-            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cinema%20film%20reel%20logo%2C%20green%20glow&image_size=square" alt="Logo">
+        <div class="logo">
+            <img src="picture/123.jpg" alt="Logo">
             <span class="logo-text">洞悉影视</span>
-        </a>
+        </div>
         <div class="nav-links">
             <a href="index.html" class="nav-link">首页</a>
             <a href="template2.html" class="nav-link">栏目</a>
-            <a href="history.html" class="nav-link">历史记录</a>
-            <a href="favorites.html" class="nav-link">我的收藏</a>
-            <a href="account.html" class="nav-link">账号信息</a>
+            <a href="declaration.html" class="nav-link">声明</a>
+            <a href="contact.html" class="nav-link">联系站长</a>
             <button class="register-btn">注册</button>
-            <div class="user-profile">
-                <div class="user-avatar">U</div>
-                <div class="user-menu">
-                    <a href="history.html" class="user-menu-item"><i>📋</i> 历史记录</a>
-                    <a href="favorites.html" class="user-menu-item"><i>⭐</i> 我的收藏</a>
-                    <a href="account.html" class="user-menu-item"><i>👤</i> 账号信息</a>
-                </div>
-            </div>
         </div>
     </nav>
-
-    <a href="template2.html" class="back-btn">← 返回栏目</a>
-
+    
+    <!-- 主体内容区 -->
     <div class="main-content">
-        <div class="movie-header">
-            <div class="movie-poster" style="background-image: url('C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\p2921935298.webp');"></div>
-            <div class="movie-info">
-                <h1 class="movie-title">F1：狂飙飞车</h1>
-                <p class="movie-english-title">F1: The Movie</p>
+        <a href="index.html" class="back-btn">← 返回首页</a>
+        
+        <h1 class="page-title">狂飙飞车</h1>
+        
+        <!-- 电影详情容器 -->
+        <div class="movie-detail-container">
+            <!-- 电影海报 -->
+            <div class="movie-poster-section">
+                <img src="picture/f1.webp" alt="狂飙飞车海报" class="movie-poster">
+                <div class="movie-rating">8.5</div>
+            </div>
+            
+            <!-- 电影信息 -->
+            <div class="movie-info-section">
+                <h2 class="movie-title">狂飙飞车</h2>
                 
                 <div class="movie-meta">
-                    <span>2025</span>
-                    <span>美国</span>
-                    <span>动作/冒险/运动</span>
+                    <div class="meta-item">
+                        <span class="meta-label">年份：</span>
+                        <span class="meta-value">2023</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">地区：</span>
+                        <span class="meta-value">美国</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">导演：</span>
+                        <span class="meta-value">Michael Bay</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">主演：</span>
+                        <span class="meta-value">Vin Diesel, Paul Walker</span>
+                    </div>
                 </div>
-
+                
                 <div class="movie-genres">
                     <span class="genre-tag">动作</span>
+                    <span class="genre-tag">犯罪</span>
                     <span class="genre-tag">冒险</span>
-                    <span class="genre-tag">运动</span>
                 </div>
-
-                <div class="movie-rating">
-                    <span class="rating-score">5.0</span>
-                    <span class="rating-source">豆瓣评分</span>
-                </div>
-
+                
                 <div class="movie-synopsis">
                     <div class="synopsis-title">剧情简介</div>
-                    <p class="synopsis-text">
-                        基尼·海耶斯（布拉德·皮特饰）曾是F1赛场上最具潜力的天才新星，但一场意外葬送了他的职业生涯。三十年后的如今，他作为过气但激情不减的F1车队老板，试图证明自己仍未过时。
-                    </p>
+                    <p>在这部高能量的动作大片中，多米尼克·托雷托和他的团队再次回归，面对有史以来最危险的敌人。一场惊心动魄的飙车追逐战即将展开，速度与激情的极限挑战，等你来见证！</p>
                 </div>
                 
                 <div class="movie-actions">
+                    <button class="play-btn">▶ 立即播放</button>
                     <button class="favorite-btn" onclick="toggleFavorite()">
-                        <span class="favorite-icon">⭐</span>
-                        <span class="favorite-text">加入收藏</span>
+                        <span class="favorite-icon">❤️</span>
+                        <span class="favorite-text" id="favoriteText">加入收藏</span>
                     </button>
                 </div>
             </div>
         </div>
+        
+        <!-- 视频图片模块 -->
+        <div class="content-section">
+            <h2 class="section-title">精彩剧照</h2>
+            <div class="media-grid">
+                <div class="media-item">
+                    <img src="picture/f1.webp" alt="剧照1">
+                    <div class="media-overlay">剧照1</div>
+                </div>
+                <div class="media-item">
+                    <img src="picture/f1.webp" alt="剧照2">
+                    <div class="media-overlay">剧照2</div>
+                </div>
+                <div class="media-item">
+                    <img src="picture/f1.webp" alt="剧照3">
+                    <div class="media-overlay">剧照3</div>
+                </div>
+                <div class="media-item">
+                    <img src="picture/f1.webp" alt="剧照4">
+                    <div class="media-overlay">剧照4</div>
+                </div>
+                <div class="media-item">
+                    <img src="picture/f1.webp" alt="剧照5">
+                    <div class="media-overlay">剧照5</div>
+                </div>
+                <div class="media-item">
+                    <img src="picture/f1.webp" alt="剧照6">
+                    <div class="media-overlay">剧照6</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 讨论区模块 -->
+        <div class="content-section">
+            <h2 class="section-title">精彩评论</h2>
+            <div class="discussion-section">
+                <!-- 评论表单 -->
+                <div class="comment-form">
+                    <div class="comment-avatar">U</div>
+                    <div class="comment-input-area">
+                        <textarea class="comment-input" placeholder="发表你的评论..."></textarea>
+                        <div class="comment-actions">
+                            <button class="cancel-btn">取消</button>
+                            <button class="comment-btn">发表评论</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 评论列表 -->
+                <div class="comments-list">
+                    <div class="comment-item">
+                        <div class="comment-avatar">A</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">极速玩家</span>
+                                <span class="comment-time">2小时前</span>
+                            </div>
+                            <p class="comment-text">太刺激了！飙车场面简直燃爆全场，肾上腺素飙升！</p>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 点赞</button>
+                                <button class="reaction-btn">💬 回复</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-item">
+                        <div class="comment-avatar">B</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">速度狂人</span>
+                                <span class="comment-time">5小时前</span>
+                            </div>
+                            <p class="comment-text">期待已久的续集，果然没让我失望！推荐大家去看！</p>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 点赞</button>
+                                <button class="reaction-btn">💬 回复</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-item">
+                        <div class="comment-avatar">C</div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">影迷小王</span>
+                                <span class="comment-time">1天前</span>
+                            </div>
+                            <p class="comment-text">场面宏大，特效震撼，是今年最好看的动作片之一！</p>
+                            <div class="comment-reactions">
+                                <button class="reaction-btn">👍 点赞</button>
+                                <button class="reaction-btn">💬 回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <script src="movies_data.js"></script>
+    
+    <script src="history_manager.js"></script>
     <script>
         const MOVIE_ID = 'f1';
         let isFavorited = false;
@@ -464,7 +622,7 @@
             isFavorited = saved === 'true';
             
             const btn = document.querySelector('.favorite-btn');
-            const text = document.querySelector('.favorite-text');
+            const text = document.getElementById('favoriteText');
             
             if (isFavorited) {
                 btn.classList.add('favorited');
@@ -478,7 +636,7 @@
         function toggleFavorite() {
             isFavorited = !isFavorited;
             const btn = document.querySelector('.favorite-btn');
-            const text = document.querySelector('.favorite-text');
+            const text = document.getElementById('favoriteText');
             
             localStorage.setItem('favorite_' + MOVIE_ID, isFavorited);
             
@@ -489,31 +647,24 @@
             } else {
                 btn.classList.remove('favorited');
                 text.textContent = '加入收藏';
-                alert('已取消收藏！');
+                alert('已取消收藏');
             }
         }
         
-        function syncFavoriteStatus() {
-            const saved = localStorage.getItem('favorite_' + MOVIE_ID);
-            const currentStatus = saved === 'true';
-            
-            if (currentStatus !== isFavorited) {
-                isFavorited = currentStatus;
-                const btn = document.querySelector('.favorite-btn');
-                const text = document.querySelector('.favorite-text');
-                
-                if (isFavorited) {
-                    btn.classList.add('favorited');
-                    text.textContent = '已收藏';
-                } else {
-                    btn.classList.remove('favorited');
-                    text.textContent = '加入收藏';
-                }
-            }
+        function recordVisit() {
+            recordMovieVisit({
+                id: 'f1',
+                title: '狂飙飞车',
+                poster: 'picture/f1.webp',
+                year: '2023',
+                rating: '8.5'
+            });
         }
         
-        document.addEventListener('DOMContentLoaded', initFavorite);
-        window.addEventListener('storage', syncFavoriteStatus);
+        document.addEventListener('DOMContentLoaded', function() {
+            initFavorite();
+            recordVisit();
+        });
     </script>
 </body>
 </html>

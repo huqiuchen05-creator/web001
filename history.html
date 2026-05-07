@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>历史记录 - 洞悉影视</title>
+    <link rel="icon" href="picture/123.jpg" type="image/jpeg">
     <style>
         * {
             margin: 0;
@@ -214,6 +215,34 @@
             padding: 30px;
         }
         
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .history-count {
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .clear-history-btn {
+            background-color: rgba(255, 0, 0, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+            padding: 6px 16px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .clear-history-btn:hover {
+            background-color: #ff4444;
+            color: #fff;
+        }
+        
         .history-item {
             display: flex;
             align-items: center;
@@ -221,6 +250,7 @@
             padding: 20px;
             border-bottom: 1px solid rgba(0, 255, 170, 0.2);
             transition: all 0.3s ease;
+            position: relative;
         }
         
         .history-item:hover {
@@ -232,12 +262,33 @@
             border-bottom: none;
         }
         
+        .history-item.removing {
+            animation: slideOut 0.3s ease-out forwards;
+        }
+        
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+        }
+        
         .history-poster {
             width: 80px;
             height: 120px;
             background-size: cover;
             background-position: center;
             border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .history-poster:hover {
+            transform: scale(1.05);
         }
         
         .history-info {
@@ -249,12 +300,34 @@
             font-weight: bold;
             margin-bottom: 8px;
             color: #fff;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .history-title:hover {
+            color: #00ffaa;
         }
         
         .history-time {
             font-size: 14px;
             color: #aaa;
             margin-bottom: 12px;
+        }
+        
+        .history-progress {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .history-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffaa, #00cc99);
+            border-radius: 2px;
+            transition: width 0.3s ease;
         }
         
         .history-actions {
@@ -271,11 +344,68 @@
             font-size: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
+            min-width: 80px;
+            text-align: center;
         }
         
         .history-btn:hover {
             background-color: #00ffaa;
             color: #000;
+        }
+        
+        .history-btn.delete {
+            background-color: rgba(255, 0, 0, 0.1);
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+        
+        .history-btn.delete:hover {
+            background-color: #ff4444;
+            color: #fff;
+        }
+        
+        .history-btn.favorite {
+            background-color: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            border-color: #ffd700;
+        }
+        
+        .history-btn.favorite:hover {
+            background-color: #ffd700;
+            color: #000;
+        }
+        
+        /* 操作提示 */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 10000;
+            border: 1px solid #00ffaa;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .toast.error {
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+        
+        .toast.success {
+            border-color: #00ffaa;
+            color: #00ffaa;
         }
         
         /* 空状态 */
@@ -533,7 +663,7 @@
     <!-- 顶部导航栏 -->
     <nav class="navbar">
         <a href="index.html" class="logo">
-            <img src="C:\Users\19256\Desktop\设艺\作业\用户体验设计\网页\素材\微信图片_20260408195724_153_6.jpg" alt="Logo">
+            <img src="picture/123.jpg" alt="Logo">
             <span class="logo-text">洞悉影视</span>
         </a>
         <div class="nav-links">
@@ -557,47 +687,21 @@
     <div class="main-content">
         <h1 class="page-title">历史记录</h1>
         
-        <div class="history-content">
-            <!-- 历史记录项 -->
-            <div class="history-item">
-                <div class="history-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Iron%20Man%20movie%20poster%2C%20superhero%2C%20tech%20suit&image_size=portrait_4_3');"></div>
-                <div class="history-info">
-                    <h3 class="history-title">钢铁侠</h3>
-                    <p class="history-time">2026-04-23 14:30</p>
-                    <div class="history-actions">
-                        <button class="history-btn">继续观看</button>
-                        <button class="history-btn">添加到收藏</button>
-                        <button class="history-btn">删除记录</button>
-                    </div>
-                </div>
+        <div class="history-content" id="historyContent">
+            <!-- 历史记录头部 -->
+            <div class="history-header">
+                <span class="history-count">共 <span id="historyCount">0</span> 条观看记录</span>
+                <button class="clear-history-btn" id="clearHistoryBtn">清空全部</button>
             </div>
             
-            <div class="history-item">
-                <div class="history-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Interstellar%20movie%20scene%2C%20space%2C%20galaxy%2C%20astronaut&image_size=portrait_4_3');"></div>
-                <div class="history-info">
-                    <h3 class="history-title">星际穿越</h3>
-                    <p class="history-time">2026-04-22 20:15</p>
-                    <div class="history-actions">
-                        <button class="history-btn">继续观看</button>
-                        <button class="history-btn">添加到收藏</button>
-                        <button class="history-btn">删除记录</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="history-item">
-                <div class="history-poster" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Titanic%20movie%20scene%2C%20ship%2C%20ocean%2C%20romance&image_size=portrait_4_3');"></div>
-                <div class="history-info">
-                    <h3 class="history-title">泰坦尼克号</h3>
-                    <p class="history-time">2026-04-21 18:45</p>
-                    <div class="history-actions">
-                        <button class="history-btn">继续观看</button>
-                        <button class="history-btn">添加到收藏</button>
-                        <button class="history-btn">删除记录</button>
-                    </div>
-                </div>
+            <!-- 历史记录列表 -->
+            <div id="historyList">
+                <!-- 动态加载 -->
             </div>
         </div>
+        
+        <!-- 操作提示 -->
+        <div class="toast" id="toast"></div>
     </div>
     
     <!-- 注册模态框 -->
@@ -654,6 +758,7 @@
         </div>
     </div>
     
+    <script src="history_manager.js"></script>
     <script>
         // 注册模态框功能
         const registerBtn = document.querySelector('.register-btn');
@@ -726,6 +831,159 @@
                     this.textContent = countdown + '秒后重试';
                 }
             }, 1000);
+        });
+        
+        // 历史记录交互功能
+        const toast = document.getElementById('toast');
+        const historyCount = document.getElementById('historyCount');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const historyList = document.getElementById('historyList');
+        const historyContent = document.getElementById('historyContent');
+        
+        // 格式化时间
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}`;
+        }
+        
+        // 显示提示消息
+        function showToast(message, type = 'success') {
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        // 继续观看电影
+        function continueWatch(movieId) {
+            const movieName = getMovieNameFromStorage(movieId);
+            showToast(`正在播放 ${movieName}...`);
+            setTimeout(() => {
+                window.location.href = `movie_detail_${movieId}.html`;
+            }, 500);
+        }
+        
+        // 跳转到电影详情页
+        function watchMovie(movieId) {
+            window.location.href = `movie_detail_${movieId}.html`;
+        }
+        
+        // 添加到收藏
+        function addToFavorites(movieId, btn) {
+            const movieName = getMovieNameFromStorage(movieId);
+            const isFavorited = localStorage.getItem('favorite_' + movieId) === 'true';
+            
+            if (isFavorited) {
+                showToast(`${movieName} 已在收藏中`, 'error');
+                return;
+            }
+            
+            localStorage.setItem('favorite_' + movieId, 'true');
+            btn.textContent = '✓ 已收藏';
+            btn.style.backgroundColor = '#ffd700';
+            btn.style.color = '#000';
+            showToast(`已将 ${movieName} 添加到收藏`);
+        }
+        
+        // 删除单条记录
+        function deleteHistory(btn) {
+            const historyItem = btn.closest('.history-item');
+            const movieId = historyItem.dataset.movie;
+            const movieName = getMovieNameFromStorage(movieId);
+            
+            historyItem.classList.add('removing');
+            
+            setTimeout(() => {
+                HistoryManager.removeHistory(movieId);
+                historyItem.remove();
+                updateHistoryCount();
+                showToast(`已删除 ${movieName} 的观看记录`);
+                
+                if (document.querySelectorAll('.history-item').length === 0) {
+                    showEmptyState();
+                }
+            }, 300);
+        }
+        
+        // 更新记录数量
+        function updateHistoryCount() {
+            const count = HistoryManager.getHistoryCount();
+            historyCount.textContent = count;
+        }
+        
+        // 清空全部记录
+        clearHistoryBtn.addEventListener('click', function() {
+            if (confirm('确定要清空所有观看记录吗？')) {
+                const items = document.querySelectorAll('.history-item');
+                items.forEach(item => item.classList.add('removing'));
+                
+                setTimeout(() => {
+                    HistoryManager.clearHistory();
+                    items.forEach(item => item.remove());
+                    updateHistoryCount();
+                    showEmptyState();
+                    showToast('已清空所有观看记录');
+                }, 300);
+            }
+        });
+        
+        // 显示空状态
+        function showEmptyState() {
+            historyContent.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📋</div>
+                    <div class="empty-text">暂无观看记录</div>
+                    <div class="empty-hint">快去观看精彩电影吧！</div>
+                </div>
+            `;
+        }
+        
+        // 从存储获取电影名称
+        function getMovieNameFromStorage(movieId) {
+            const history = HistoryManager.getHistory();
+            const movie = history.find(item => item.id === movieId);
+            return movie ? movie.title : movieId;
+        }
+        
+        // 渲染历史记录列表
+        function renderHistory() {
+            const history = HistoryManager.getHistory();
+            
+            if (history.length === 0) {
+                showEmptyState();
+                return;
+            }
+            
+            historyList.innerHTML = history.map(item => `
+                <div class="history-item" data-movie="${item.id}">
+                    <div class="history-poster" style="background-image: url('${item.poster}');" onclick="watchMovie('${item.id}')"></div>
+                    <div class="history-info">
+                        <h3 class="history-title" onclick="watchMovie('${item.id}')">${item.title}</h3>
+                        <p class="history-time">${formatTime(item.timestamp)}</p>
+                        <div class="history-progress">
+                            <div class="history-progress-bar" style="width: ${item.progress || 0}%;"></div>
+                        </div>
+                        <div class="history-actions">
+                            <button class="history-btn" onclick="continueWatch('${item.id}')">${item.progress >= 100 ? '重新观看' : '继续观看'}</button>
+                            <button class="history-btn favorite" onclick="addToFavorites('${item.id}', this)">添加收藏</button>
+                            <button class="history-btn delete" onclick="deleteHistory(this)">删除</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            updateHistoryCount();
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            renderHistory();
         });
     </script>
 </body>
